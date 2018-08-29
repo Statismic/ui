@@ -25,8 +25,7 @@ export default {
 <style scoped>
 .container {
   display: grid;
-  grid-gap: 10px;
-  grid-template-columns: repeat(auto-fit, minmax(155px, 1fr));
-  justify-items: stretch;
+  grid-gap: 20px;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
 }
 </style>
