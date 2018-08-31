@@ -27,10 +27,11 @@ export default {
 
 <style scoped>
 .collapsible {
-  background-color: #522d80;
+  background-color: rgba(0, 0, 0, 0.5);
   color: white;
   text-align: center;
   cursor: pointer;
+  height: 30px;
   padding: 15px;
   padding-left: 20px;
   padding-right: 20px;
@@ -58,6 +59,8 @@ export default {
   cursor: pointer;
   padding: 0 18px;
   overflow: hidden;
+  background-color: rgba(255, 255, 255, 0.9);
+  border-radius: 8px;
 
   /* Add shadows to create the "card" effect */
   box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.2);
@@ -79,12 +82,10 @@ export default {
 }
 @keyframes drop-down {
   0% {
-    transform: translateY(-30px);
-    opacity: 0;
+    transform: translateY(-5px);
   }
   100% {
     transform: translateY(0px);
-    opacity: 1;
   }
 }
 </style>
