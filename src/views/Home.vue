@@ -21,7 +21,7 @@
       clickMode="push"
     >
     </vue-particles>
-    <Menu v-for="(value, index) in menus" :key="index" :name="value" />
+    <Menu v-for="(category, index) in menus" :key="index" :name="category.name" :apps="category.apps" />
   </div>
 </div>
 </template>
@@ -36,7 +36,28 @@ export default {
   },
   data() {
     let menus = [];
-    for (let i = 1; i <= 15; i++) menus.push(i.toString());
+
+    menus.push({
+      name: "Simulations",
+      apps: [
+        {
+          name: "Coin",
+          path: "/app/simulations/coin"
+        }
+      ]
+    });
+    for (let i = 1; i < 15; i++) {
+      menus.push({
+        name: i.toString(),
+        apps: [
+          {
+            name: "Lorem ipsum dolor sit amet.",
+            path: "/"
+          }
+        ]
+      });
+    }
+
     return {
       menus: menus
     };

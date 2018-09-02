@@ -1,21 +1,22 @@
 <template>
 <div>
-    <div class="collapsible" @click="isCollapsed=!isCollapsed">
-        <i class="fas icon" :class="{ 'fa-plus': isCollapsed, 'fa-minus': !isCollapsed }"></i>
-        {{ name }}
+  <div class="collapsible" @click="isCollapsed=!isCollapsed">
+    <i class="fas icon" :class="{ 'fa-plus': isCollapsed, 'fa-minus': !isCollapsed }"></i>
+    {{ name }}
+  </div>
+  <transition name="drop">
+    <div class="content" v-show="!isCollapsed">
+      <router-link v-for="(app, index) in apps" :key="index" :to="app.path">{{ app.name }}</router-link>
     </div>
-    <transition name="drop">
-        <div class="content" v-show="!isCollapsed">
-            <p>Lorem ipsum...</p>
-        </div>
-    </transition>
+  </transition>
 </div>
 </template>
 
 <script>
 export default {
   props: {
-    name: String
+    name: String,
+    apps: Array // Should contain "name" and "path"
   },
   data() {
     return {
