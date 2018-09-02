@@ -1,7 +1,7 @@
 module.exports = {
   pwa: {
-    themeColor: '#F66733',
-    msTileColor: '#522D80',
+    themeColor: '#005960',
+    msTileColor: '#005960',
     name: 'Statismic'
   }
 }
