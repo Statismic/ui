@@ -1,33 +1,21 @@
 <template>
 <div>
-  <div class="collapsible" @click="isCollapsed=!isCollapsed">
-    <i class="fas icon" :class="{ 'fa-plus': isCollapsed, 'fa-minus': !isCollapsed }"></i>
+  <div class="card">
     {{ name }}
   </div>
-  <transition name="drop">
-    <div class="content" v-show="!isCollapsed">
-      <router-link v-for="(app, index) in apps" :key="index" :to="app.path">{{ app.name }}</router-link>
-    </div>
-  </transition>
 </div>
 </template>
 
 <script>
 export default {
   props: {
-    name: String,
-    apps: Array // Should contain "name" and "path"
-  },
-  data() {
-    return {
-      isCollapsed: true
-    };
+    name: String
   }
 };
 </script>
 
 <style scoped>
-.collapsible {
+.card {
   background-color: rgba(0, 0, 0, 0.5);
   color: white;
   text-align: center;
@@ -44,49 +32,7 @@ export default {
   transition: 0.3s;
 }
 
-.collapsible:hover {
+.card:hover {
   box-shadow: 0 2px 4px 2px rgba(0, 0, 0, 0.2);
-}
-
-.icon {
-  font-size: 13px;
-  color: white;
-  float: right;
-  margin-top: 3px;
-}
-
-/* Style the collapsible content. Note: hidden by default */
-.content {
-  cursor: pointer;
-  padding: 0 18px;
-  overflow: hidden;
-  background-color: rgba(255, 255, 255, 0.9);
-  border-radius: 8px;
-
-  /* Add shadows to create the "card" effect */
-  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.2);
-  transition: 0.3s;
-}
-
-.content:hover {
-  box-shadow: 0 2px 1px 0 rgba(0, 0, 0, 0.2);
-}
-
-/* Drop down animation */
-.drop-enter-active {
-  animation: drop-down 0.3s;
-  animation-fill-mode: forwards;
-}
-.drop-leave-active {
-  animation: drop-down 0.3s reverse;
-  animation-fill-mode: forwards;
-}
-@keyframes drop-down {
-  0% {
-    transform: translateY(-5px);
-  }
-  100% {
-    transform: translateY(0px);
-  }
 }
 </style>

@@ -1,66 +1,97 @@
 <template>
 <div>
-  <img id="logo" src="@/assets/logo/logo_transparent.png" height="350px"/>
-  <input type="text" placeholder="Search">
+  <transition name="show">
+    <img id="logo" src="@/assets/logo/logo_transparent.png" height="350px" v-show="!searchMode" />
+  </transition>
+  <input id="search" type="text" placeholder="Search" v-model="searchTerm">
   <div class="grid-container">
-    <vue-particles
-      color="#dedede"
-      :particleOpacity="0.7"
-      :particlesNumber="80"
-      shapeType="circle"
-      :particleSize="4"
-      linesColor="#dedede"
-      :linesWidth="1"
-      :lineLinked="true"
-      :lineOpacity="0.4"
-      :linesDistance="150"
-      :moveSpeed="3"
-      :hoverEffect="true"
-      hoverMode="grab"
-      :clickEffect="true"
-      clickMode="push"
-    >
-    </vue-particles>
-    <Menu v-for="(category, index) in menus" :key="index" :name="category.name" :apps="category.apps" />
+    <Modal v-show="showModal" @close="showModal = false" :name="modal.name" :apps="modal.apps" />
+    <Menu v-for="(category, index) in categories" :key="index" :name="category.name" @click.native="onShowModal(category)"/>
   </div>
+
+  <vue-particles
+    color="#dedede"
+    :particleOpacity="0.7"
+    :particlesNumber="80"
+    shapeType="circle"
+    :particleSize="4"
+    linesColor="#dedede"
+    :linesWidth="1"
+    :lineLinked="true"
+    :lineOpacity="0.4"
+    :linesDistance="150"
+    :moveSpeed="3"
+    :hoverEffect="true"
+    hoverMode="grab"
+    :clickEffect="true"
+    clickMode="push"
+  >
+  </vue-particles>
 </div>
 </template>
 
 <script>
+import categories from "@/assets/data/categories.json";
+import Fuse from "fuse.js";
 import Menu from "@/components/Menu.vue";
+import Modal from "@/components/Modal.vue";
 
 export default {
   name: "home",
   components: {
-    Menu
+    Menu,
+    Modal
   },
   data() {
-    let menus = [];
-
-    menus.push({
-      name: "Simulations",
-      apps: [
-        {
-          name: "Coin",
-          path: "/app/simulations/coin"
-        }
-      ]
+    let list = [];
+    categories.forEach((category, index) => {
+      for (const app of category.apps) {
+        list.push({
+          id: index,
+          category: category.name,
+          name: app.name
+        });
+      }
     });
-    for (let i = 1; i < 15; i++) {
-      menus.push({
-        name: i.toString(),
-        apps: [
-          {
-            name: "Lorem ipsum dolor sit amet.",
-            path: "/"
-          }
-        ]
-      });
-    }
+
+    const options = {
+      shouldSort: true,
+      threshold: 0.6,
+      location: 0,
+      distance: 100,
+      maxPatternLength: 32,
+      minMatchCharLength: 1,
+      keys: ["category", "name"]
+    };
 
     return {
-      menus: menus
+      fuse: new Fuse(list, options),
+      searchTerm: "",
+      searchMode: false,
+      showModal: false,
+      categories: categories,
+      modal: {
+        name: "",
+        apps: []
+      }
     };
+  },
+  methods: {
+    onShowModal(category) {
+      this.showModal = true;
+      this.modal.name = category.name;
+      this.modal.apps = category.apps;
+    }
+  },
+  watch: {
+    searchTerm: function(val, oldVal) {
+      if (val === "") {
+        this.searchMode = false;
+      } else {
+        this.searchMode = true;
+      }
+      console.log(this.fuse.search(val));
+    }
   }
 };
 </script>
@@ -71,7 +102,22 @@ export default {
   margin: 0 auto;
 }
 
-input {
+.show-enter,
+.show-leave-to {
+  max-height: 0px;
+}
+
+.show-enter-to,
+.show-leave {
+  max-height: 350px;
+}
+
+.show-enter-active,
+.show-leave-active {
+  transition: all 1s ease 0s;
+}
+
+input#search {
   display: block;
   border: 0;
   outline: 0;

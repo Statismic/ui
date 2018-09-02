@@ -1,0 +1,44 @@
+[
+  {
+    "name": "Simulations",
+    "apps": [
+      {
+        "name": "Coin",
+        "path": "/app/simulations/coin"
+      }
+    ]
+  },
+  {
+    "name": "Probability",
+    "apps": [
+      {
+        "name": "Random Babies",
+        "path": "/"
+      },
+      {
+        "name": "Monty Hall",
+        "path": "/"
+      },
+      {
+        "name": "Secretary Problem",
+        "path": "/"
+      },
+      {
+        "name": "Normal Probablity Calculator",
+        "path": "/"
+      },
+      {
+        "name": "t Probablity Calculator",
+        "path": "/"
+      },
+      {
+        "name": "Randomizing Subjects",
+        "path": "/"
+      },
+      {
+        "name": "Random number generator",
+        "path": "/"
+      }
+    ]
+  }
+]
