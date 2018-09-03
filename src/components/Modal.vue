@@ -1,15 +1,15 @@
 <template>
 <transition name="modal">
-<div class="modal-mask">
+<div class="modal-mask" @click="$emit('close')">
     <div class="modal-wrapper">
         <div class="modal-container">
+            <i class="far fa-times-circle close-icon" @click="$emit('close')"></i>
             <h1>{{ name }}</h1>
             <ul>
                 <li v-for="(app, index) in apps" :key="index">
                     <router-link :to="app.path">{{ app.name }}</router-link>
                 </li>
             </ul>
-            <button class="modal-default-button" @click="$emit('close')">Close</button>
         </div>
     </div>
 </div>
@@ -89,5 +89,11 @@ export default {
 .modal-leave-active .modal-container {
   -webkit-transform: scale(1.1);
   transform: scale(1.1);
+}
+
+.close-icon {
+  cursor: pointer;
+  float: right;
+  font-size: 1.5em;
 }
 </style>
