@@ -1,8 +1,6 @@
 <template>
-<div>
-  <div class="card">
-    {{ name }}
-  </div>
+<div class="card">
+  <h3 class="title">{{ name }}</h3>
 </div>
 </template>
 
@@ -17,13 +15,8 @@ export default {
 <style scoped>
 .card {
   background-color: rgba(0, 0, 0, 0.5);
-  color: white;
-  text-align: center;
   cursor: pointer;
-  height: 30px;
-  padding: 15px;
-  padding-left: 20px;
-  padding-right: 20px;
+  padding: 5px;
   border-radius: 5px;
   z-index: 10;
 
@@ -34,5 +27,10 @@ export default {
 
 .card:hover {
   box-shadow: 0 2px 4px 2px rgba(0, 0, 0, 0.2);
+}
+
+.title {
+  color: white;
+  text-align: center;
 }
 </style>

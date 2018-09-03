@@ -4,7 +4,9 @@
     <img id="logo" src="@/assets/logo/logo_transparent.png" height="350px" v-show="!searchMode" />
   </transition>
   <input id="search" type="text" placeholder="Search" v-model="searchTerm">
-  <div class="grid-container">
+  <SearchResult id="search-result" v-show="searchMode" :results="searchResults" />
+
+  <div class="grid-container" v-show="!searchMode">
     <Modal v-show="showModal" @close="showModal = false" :name="modal.name" :apps="modal.apps" />
     <Menu v-for="(category, index) in categories" :key="index" :name="category.name" @click.native="onShowModal(category)"/>
   </div>
@@ -35,12 +37,14 @@ import categories from "@/assets/data/categories.json";
 import Fuse from "fuse.js";
 import Menu from "@/components/Menu.vue";
 import Modal from "@/components/Modal.vue";
+import SearchResult from "@/components/SearchResult.vue";
 
 export default {
   name: "home",
   components: {
     Menu,
-    Modal
+    Modal,
+    SearchResult
   },
   data() {
     let list = [];
@@ -49,7 +53,8 @@ export default {
         list.push({
           id: index,
           category: category.name,
-          name: app.name
+          name: app.name,
+          path: app.path
         });
       }
     });
@@ -68,6 +73,7 @@ export default {
       fuse: new Fuse(list, options),
       searchTerm: "",
       searchMode: false,
+      searchResults: [],
       showModal: false,
       categories: categories,
       modal: {
@@ -87,10 +93,11 @@ export default {
     searchTerm: function(val, oldVal) {
       if (val === "") {
         this.searchMode = false;
-      } else {
-        this.searchMode = true;
+        return;
       }
-      console.log(this.fuse.search(val));
+
+      this.searchMode = true;
+      this.searchResults = this.fuse.search(val);
     }
   }
 };
@@ -114,7 +121,7 @@ export default {
 
 .show-enter-active,
 .show-leave-active {
-  transition: all 1s ease 0s;
+  transition: max-height 1s ease 0s;
 }
 
 input#search {
@@ -122,12 +129,17 @@ input#search {
   border: 0;
   outline: 0;
   margin: 0 auto;
+  margin-bottom: 20px;
   width: 300px;
   background: transparent;
   border-bottom: 1px solid white;
   color: white;
   text-align: center;
   font-size: 1.5em;
+}
+
+#search-result {
+  margin: 0 auto;
 }
 
 .grid-container {
