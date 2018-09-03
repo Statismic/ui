@@ -1,0 +1,19 @@
+language: node_js
+node_js:
+  - "node"
+install:
+  - npm install
+script:
+  - npm run build --modern
+cache:
+  directories:
+    - "node_modules"
+deploy:
+  repo: Statismic/statismic.github.io
+  provider: pages
+  local-dir: dist
+  target-branch: master
+  skip-cleanup: true
+  github-token: $GITHUB_TOKEN # Set in the settings page of your repository, as a secure variable
+  on:
+    branch: master
