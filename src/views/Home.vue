@@ -7,8 +7,8 @@
   <SearchResult id="search-result" v-show="searchMode" :results="searchResults" />
 
   <div class="grid-container" v-show="!searchMode">
-    <Modal v-show="showModal" @close="showModal = false" :name="modal.name" :apps="modal.apps" />
-    <Menu v-for="(category, index) in categories" :key="index" :name="category.name" @click.native="onShowModal(category)"/>
+    <CategoryModal v-show="showModal" @close="showModal = false" :name="modal.name" :apps="modal.apps" />
+    <Category v-for="(category, index) in categories" :key="index" :name="category.name" @click.native="onShowModal(category)"/>
   </div>
 
   <vue-particles
@@ -35,15 +35,15 @@
 <script>
 import categories from "@/assets/data/categories.json";
 import Fuse from "fuse.js";
-import Menu from "@/components/Menu.vue";
-import Modal from "@/components/Modal.vue";
+import Category from "@/components/Category.vue";
+import CategoryModal from "@/components/CategoryModal.vue";
 import SearchResult from "@/components/SearchResult.vue";
 
 export default {
   name: "home",
   components: {
-    Menu,
-    Modal,
+    Category,
+    CategoryModal,
     SearchResult
   },
   data() {
@@ -90,7 +90,7 @@ export default {
     }
   },
   watch: {
-    searchTerm: function(val, oldVal) {
+    searchTerm(val) {
       if (val === "") {
         this.searchMode = false;
         return;
