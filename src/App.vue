@@ -1,10 +1,18 @@
 <template>
+<div>
+  <Notification/>
   <router-view/>
+</div>
 </template>
 
 <script>
+import Notification from "@/components/Notification.vue";
+
 export default {
-  name: "app"
+  name: "app",
+  components: {
+    Notification
+  }
 };
 </script>
 
@@ -17,5 +25,6 @@ export default {
 
 body {
   background-color: #005960;
+  margin: 0px;
 }
 </style>
