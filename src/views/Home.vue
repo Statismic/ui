@@ -143,7 +143,7 @@ input#search {
 }
 
 .grid-container {
-  padding: 40px;
+  padding: 40px 20px;
   display: grid;
   grid-gap: 20px;
   grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
