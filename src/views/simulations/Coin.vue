@@ -17,9 +17,8 @@
   <br>
   <br>
   <br>
-  <span>Hidden?: {{ hidden }}</span><br>
   <p v-show="!hidden">{{coinString}}</p>
-  <p>{{timerString}}</p>
+  <p v-html="timerString"></p>
 
 </div>
 </template>
@@ -37,7 +36,7 @@ export default {
       exper: 1,
       probability: .5,
       hidden: false,
-      accuracy: 1000,
+      accuracy: 1000, //decimal accuracy s.t. we weight the random probability
     };
   },
   methods: {
@@ -52,7 +51,7 @@ export default {
           this.coinString+= +x
           this.coinString+="\t"
           this.total++
-          if(x===1)
+          if(x===true)
             this.heads++     
         }
       }
@@ -79,5 +78,6 @@ export default {
 </script>
 
 <style scoped>
+  div {background-color: lightblue;}
 </style>
 
