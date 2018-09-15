@@ -19,6 +19,11 @@ export default new Router({
       children: [{ path: "", component: PageNotFound }, ...simulationsRoutes]
     },
     {
+      path: "/sandbox",
+      component: () =>
+        import(/* webpackChunkName: "sandbox" */ "./views/Sandbox.vue")
+    },
+    {
       path: "*",
       component: PageNotFound
     }

@@ -1,5 +1,5 @@
 <template>
-<div>
+<div class="container">
   <Notification/>
   <router-view/>
 </div>
@@ -26,5 +26,11 @@ export default {
 body {
   background-color: #005960;
   margin: 0px;
+}
+
+html,
+body,
+.container {
+  height: 100%;
 }
 </style>
