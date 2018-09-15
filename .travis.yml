@@ -17,3 +17,10 @@ deploy:
   github-token: $GITHUB_TOKEN # Set in the settings page of your repository, as a secure variable
   on:
     branch: master
+notifications:
+  email:
+    recipients:
+      - lherman.cs@gmail.com
+      - gestewa@g.clemson.edu
+    on_success: always # default: change
+    on_failure: always # default: always

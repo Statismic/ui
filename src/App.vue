@@ -1,10 +1,18 @@
 <template>
+<div>
+  <Notification/>
   <router-view/>
+</div>
 </template>
 
 <script>
+import Notification from "@/components/Notification.vue";
+
 export default {
-  name: "app"
+  name: "app",
+  components: {
+    Notification
+  }
 };
 </script>
 
@@ -13,10 +21,10 @@ export default {
   font-family: "Avenir", Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  color: #2c3e50;
 }
 
 body {
   background-color: #005960;
+  margin: 0px;
 }
 </style>
