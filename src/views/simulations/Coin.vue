@@ -94,48 +94,64 @@ export default {
 <style scoped>
 div {
   line-height: 1.6;
+  margin: 0;
+  padding: 0;
   background: lightblue;
 
   display: grid;
   grid-template:
     "nav nav nav nav" auto
+    "description description description description" auto
     ". input short-graph ." 39vh
     ". output long-graph ." 39vh
     "foot foot foot foot" auto
     / 1fr minmax(15em, 3fr) minmax(30em, 6fr) 1fr;
   grid-column-gap: 1.5em;
-  grid-row-gap: 1.5em;
 }
 
 .nav {
   grid-area: nav;
-  background: blue;
+  background: #005960;
 }
 .nav-logo {
   text-align: left;
   color: white;
 }
 .description {
+  margin: 0;
+  padding: 0;
   grid-area: description;
+  text-align: center;
+  background: #056f78;
 }
 .input {
+  margin-top: 2em;
+  padding: 1.5em;
   grid-area: input;
-  background: red;
+  background: lightcoral;
 }
 .short-graph {
+  margin-top: 2em;
+  padding: 1.5em;
   grid-area: short-graph;
-  background: green;
+  background: #86d5db;
 }
 .output {
+  margin-top: 2em;
+  margin-bottom: 2em;
+  padding: 1.5em;
   grid-area: output;
-  background: orange;
+  background: #5acdd6;
 }
 .long-graph {
+  margin-top: 2em;
+  margin-bottom: 2em;
+  padding: 1.5em;
   grid-area: long-graph;
-  background: yellow;
+  background: #5acdd6;
 }
 .foot {
   grid-area: foot;
-  background: blue;
+  background: #005960;
 }
 </style>
