@@ -33,6 +33,12 @@
     {{ v }}
   </text>
 
+  <circle 
+    v-for="(v, index) in xdata"
+    :key="index"
+    :cx="padding + v * xgap" 
+    :cy="height - padding + 5 - ydata[index] * ygap" 
+    r="5" fill="black"/>
 </svg>
 </template>
 

@@ -12,7 +12,7 @@ export default {
   data() {
     return {
       xdata: [0, 1, 3, 5],
-      ydata: [0, 1, 3, 5]
+      ydata: [0, 7, 3, 5]
     };
   }
 };
