@@ -18,14 +18,14 @@
     {{ ylabel }}
   </text>
 
-  <text
+  <text class="index index-x"
     v-for="(v, index) in xdata"
     :key="index"
     :x="padding + v * xgap" :y="height - (padding - 20)"
     text-anchor="middle">
     {{ v }}
   </text>
-  <text
+  <text class="index index-y"
     v-for="(v, index) in ydata"
     :key="index"
     :x="padding - 15" :y="height - padding + 5 - v * ygap"
@@ -33,7 +33,7 @@
     {{ v }}
   </text>
 
-  <circle 
+  <circle class="point"
     v-for="(v, index) in xdata"
     :key="index"
     :cx="padding + v * xgap" 
