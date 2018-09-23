@@ -37,8 +37,25 @@
     v-for="(v, index) in xdata"
     :key="index"
     :cx="padding + v * xgap" 
-    :cy="height - padding + 5 - ydata[index] * ygap" 
-    r="5" fill="black"/>
+    :cy="height - padding - ydata[index] * ygap" 
+    r="3" fill="black"
+    @mouseover="activeIndex=index"
+    @mouseout="activeIndex=-1"/>
+
+  <line class="highligher highlighter-x" 
+    v-for="(v, index) in xdata"
+    :key="index"
+    :x1="padding" :y1="height - padding - ydata[index] * ygap" 
+    :x2="padding + v * xgap - 3" :y2="height - padding - ydata[index] * ygap" 
+    stroke="black" stroke-dasharray="5,5"
+    v-show="activeIndex===index"/>
+  <line class="highligher highlighter-y" 
+    v-for="(v, index) in xdata"
+    :key="index"
+    :x1="padding + v * xgap" :y1="height - padding" 
+    :x2="padding + v * xgap" :y2="height - padding + 3 - ydata[index] * ygap" 
+    stroke="black" stroke-dasharray="5,5"
+    v-show="activeIndex===index"/>
 </svg>
 </template>
 
@@ -54,11 +71,12 @@ export default {
     return {
       height: 0,
       width: 0,
-      padding: 70, // for axes
+      padding: 50, // for axes
       xgap: 0,
       xwidth: 0,
       ygap: 0,
-      yheight: 0
+      yheight: 0,
+      activeIndex: -1 // Index based on xdata
     };
   },
   mounted() {
@@ -97,11 +115,19 @@ export default {
 
 .axes {
   stroke: black;
-  stroke-width: 4;
+  stroke-width: 2.2;
 }
 
 .label {
-  font-weight: bold;
-  font-size: 1.4em;
+  font-size: 1em;
+}
+
+.index {
+  font-size: 0.8em;
+}
+
+.point:hover {
+  fill: gray;
+  cursor: pointer;
 }
 </style>
