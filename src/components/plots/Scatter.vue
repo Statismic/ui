@@ -18,44 +18,37 @@
     {{ ylabel }}
   </text>
 
-  <text class="index index-x"
-    v-for="(v, index) in xdata"
-    :key="index"
-    :x="padding + v * xgap" :y="height - (padding - 20)"
-    text-anchor="middle">
-    {{ v }}
-  </text>
-  <text class="index index-y"
-    v-for="(v, index) in ydata"
-    :key="index"
-    :x="padding - 15" :y="height - padding + 5 - v * ygap"
-    text-anchor="middle" writing-mode="tb-rl">
-    {{ v }}
-  </text>
+  <g v-for="(v, index) in xdata" :key="index">
+    <text class="index index-x"
+      :x="padding + v * xgap" :y="height - (padding - 20)"
+      text-anchor="middle">
+      {{ v }}
+    </text>
+    <text class="index index-y"
+      :x="padding - 15" :y="height - padding + 5 - v * ygap"
+      text-anchor="middle" writing-mode="tb-rl">
+      {{ v }}
+    </text>
 
-  <circle class="point"
-    v-for="(v, index) in xdata"
-    :key="index"
-    :cx="padding + v * xgap" 
-    :cy="height - padding - ydata[index] * ygap" 
-    r="3" fill="black"
-    @mouseover="activeIndex=index"
-    @mouseout="activeIndex=-1"/>
+    <circle class="point"
+      :cx="padding + v * xgap" 
+      :cy="height - padding - ydata[index] * ygap" 
+      r="3" fill="black"
+      @mouseover="activeIndex=index"
+      @mouseout="activeIndex=-1"/>
 
-  <line class="highligher highlighter-x" 
-    v-for="(v, index) in xdata"
-    :key="index"
-    :x1="padding" :y1="height - padding - ydata[index] * ygap" 
-    :x2="padding + v * xgap - 3" :y2="height - padding - ydata[index] * ygap" 
-    stroke="black" stroke-dasharray="5,5"
-    v-show="activeIndex===index"/>
-  <line class="highligher highlighter-y" 
-    v-for="(v, index) in xdata"
-    :key="index"
-    :x1="padding + v * xgap" :y1="height - padding" 
-    :x2="padding + v * xgap" :y2="height - padding + 3 - ydata[index] * ygap" 
-    stroke="black" stroke-dasharray="5,5"
-    v-show="activeIndex===index"/>
+    <line class="highligher highlighter-x" 
+      :x1="padding" :y1="height - padding - ydata[index] * ygap" 
+      :x2="padding + v * xgap - 3" :y2="height - padding - ydata[index] * ygap" 
+      stroke="black" stroke-dasharray="5,5"
+      v-show="activeIndex===index"/>
+    <line class="highligher highlighter-y" 
+      :x1="padding + v * xgap" :y1="height - padding" 
+      :x2="padding + v * xgap" :y2="height - padding + 3 - ydata[index] * ygap" 
+      stroke="black" stroke-dasharray="5,5"
+      v-show="activeIndex===index"/>
+  </g>
+
 </svg>
 </template>
 
