@@ -3,6 +3,7 @@ import Router from "vue-router";
 import Home from "./views/Home.vue";
 import PageNotFound from "./views/PageNotFound.vue";
 import { routes as simulationsRoutes } from "./views/simulations";
+import { routes as examplesRoutes } from "./views/examples";
 import App from "./views/App.vue";
 
 Vue.use(Router);
@@ -19,9 +20,9 @@ export default new Router({
       children: [{ path: "", component: PageNotFound }, ...simulationsRoutes]
     },
     {
-      path: "/sandbox",
-      component: () =>
-        import(/* webpackChunkName: "sandbox" */ "./views/Sandbox.vue")
+      path: "/examples",
+      component: App,
+      children: [{ path: "", component: PageNotFound }, ...examplesRoutes]
     },
     {
       path: "*",
