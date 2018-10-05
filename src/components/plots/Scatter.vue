@@ -8,44 +8,44 @@
     :x2="padding" :y2="padding" />
 
   <text class="label label-x"
-    :x="width / 2" :y="height - padding + 45" 
+    :x="width / 2" :y="height - padding + 45" :fill="colorLabel"
     text-anchor="middle">
-    {{ xlabel }}
+    {{ labelX }}
   </text>
   <text class="label label-y"
-    :x="padding - 40" :y="height / 2" 
+    :x="padding - 40" :y="height / 2" :fill="colorLabel"
     text-anchor="middle" writing-mode="tb-rl">
-    {{ ylabel }}
+    {{ labelY }}
   </text>
 
-  <g v-for="(v, index) in xdata" :key="index">
+  <g v-for="(v, index) in dataX" :key="index">
     <text class="index index-x"
-      :x="padding + v * xgap" :y="height - (padding - 20)"
-      text-anchor="middle">
+      :x="padding + v * gapX" :y="height - (padding - 20)"
+      :fill="colorIndex" text-anchor="middle">
       {{ v }}
     </text>
     <text class="index index-y"
-      :x="padding - 15" :y="height - padding + 5 - v * ygap"
-      text-anchor="middle" writing-mode="tb-rl">
-      {{ v }}
+      :x="padding - 15" :y="height - padding + 5 - dataY[index] * gapY"
+      :fill="colorIndex" text-anchor="middle" writing-mode="tb-rl">
+      {{ dataY[index] }}
     </text>
 
     <circle class="point"
-      :cx="padding + v * xgap" 
-      :cy="height - padding - ydata[index] * ygap" 
-      r="3" fill="black"
+      :cx="padding + v * gapX" 
+      :cy="height - padding - dataY[index] * gapY" 
+      r="5" :fill="colorPoint"
       @mouseover="activeIndex=index"
       @mouseout="activeIndex=-1"/>
 
     <line class="highligher highlighter-x" 
-      :x1="padding" :y1="height - padding - ydata[index] * ygap" 
-      :x2="padding + v * xgap - 3" :y2="height - padding - ydata[index] * ygap" 
-      stroke="black" stroke-dasharray="5,5"
+      :x1="padding" :y1="height - padding - dataY[index] * gapY" 
+      :x2="padding + v * gapX - 3" :y2="height - padding - dataY[index] * gapY" 
+      :stroke="colorHighlighter" stroke-dasharray="5,5"
       v-show="activeIndex===index"/>
     <line class="highligher highlighter-y" 
-      :x1="padding + v * xgap" :y1="height - padding" 
-      :x2="padding + v * xgap" :y2="height - padding + 3 - ydata[index] * ygap" 
-      stroke="black" stroke-dasharray="5,5"
+      :x1="padding + v * gapX" :y1="height - padding" 
+      :x2="padding + v * gapX" :y2="height - padding + 3 - dataY[index] * gapY" 
+      :stroke="colorHighlighter" stroke-dasharray="5,5"
       v-show="activeIndex===index"/>
   </g>
 
@@ -55,20 +55,45 @@
 <script>
 export default {
   props: {
-    xlabel: String,
-    ylabel: String,
-    ydata: Array,
-    xdata: Array
+    labelX: String,
+    labelY: String,
+    dataX: {
+      type: Array,
+      required: true
+    },
+    dataY: {
+      type: Array,
+      required: true
+    },
+
+    // Design Customizations
+    padding: {
+      padding: Number,
+      default: 50
+    },
+    colorLabel: {
+      type: String,
+      default: "black"
+    },
+    colorIndex: {
+      type: String,
+      default: "black"
+    },
+    colorPoint: {
+      type: String,
+      default: "black"
+    },
+    colorHighlighter: {
+      type: String,
+      default: "black"
+    }
   },
   data() {
     return {
       height: 0,
       width: 0,
-      padding: 50, // for axes
-      xgap: 0,
-      xwidth: 0,
-      ygap: 0,
-      yheight: 0,
+      gapX: 0,
+      gapY: 0,
       activeIndex: -1 // Index based on xdata
     };
   },
@@ -83,18 +108,18 @@ export default {
     resizeHandler() {
       this.height = this.$refs.plot.clientHeight;
       this.width = this.$refs.plot.clientWidth;
-      this.xwidth = this.width - 2 * this.padding;
-      this.yheight = this.height - 2 * this.padding;
-      this.xgapHandler();
-      this.ygapHandler();
+      this.xGapHandler();
+      this.yGapHandler();
     },
-    xgapHandler() {
-      const max = Math.max(...this.xdata);
-      this.xgap = this.xwidth / max;
+    xGapHandler() {
+      const max = Math.max(...this.dataX);
+      const length = this.width - 2 * this.padding;
+      this.gapX = length / max;
     },
-    ygapHandler() {
-      const max = Math.max(...this.ydata);
-      this.ygap = this.yheight / max;
+    yGapHandler() {
+      const max = Math.max(...this.dataY);
+      const length = this.height - 2 * this.padding;
+      this.gapY = length / max;
     }
   }
 };

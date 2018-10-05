@@ -1,5 +1,5 @@
 <template>
-<scatter-plot xlabel="X Label" ylabel="Y Label" :xdata="xdata" :ydata="ydata" />
+<scatter-plot label-x="X Label" label-y="Y Label" :data-x="xdata" :data-y="ydata"/>
 </template>
 
 <script>
