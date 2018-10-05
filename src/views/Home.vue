@@ -121,7 +121,11 @@ export default {
 
 .show-enter-active,
 .show-leave-active {
+  -webkit-transition: max-height 1s ease 0s;
+  -moz-transition: max-height 1s ease 0s;
+  -o-transition: max-height 1s ease 0s;
   transition: max-height 1s ease 0s;
+  will-change: max-height;
 }
 
 input#search {
