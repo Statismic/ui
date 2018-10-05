@@ -9,31 +9,32 @@
 
   <text class="label label-x"
     :x="width / 2" :y="height - padding + 45" :fill="colorLabel"
-    text-anchor="middle">
+    :font-size="sizeLabel" text-anchor="middle">
     {{ labelX }}
   </text>
   <text class="label label-y"
     :x="padding - 40" :y="height / 2" :fill="colorLabel"
-    text-anchor="middle" writing-mode="tb-rl">
+    :font-size="sizeLabel" text-anchor="middle" writing-mode="tb-rl">
     {{ labelY }}
   </text>
 
   <g v-for="(v, index) in dataX" :key="index">
     <text class="index index-x"
       :x="padding + v * gapX" :y="height - (padding - 20)"
-      :fill="colorIndex" text-anchor="middle">
+      :fill="colorIndex" :font-size="sizeIndex" text-anchor="middle">
       {{ v }}
     </text>
     <text class="index index-y"
       :x="padding - 15" :y="height - padding + 5 - dataY[index] * gapY"
-      :fill="colorIndex" text-anchor="middle" writing-mode="tb-rl">
+      :fill="colorIndex" :font-size="sizeIndex" text-anchor="middle" 
+      writing-mode="tb-rl">
       {{ dataY[index] }}
     </text>
 
     <circle class="point"
       :cx="padding + v * gapX" 
       :cy="height - padding - dataY[index] * gapY" 
-      r="5" :fill="colorPoint"
+      :r="sizePoint" :fill="colorPoint"
       @mouseover="activeIndex=index"
       @mouseout="activeIndex=-1"/>
 
@@ -86,6 +87,18 @@ export default {
     colorHighlighter: {
       type: String,
       default: "black"
+    },
+    sizeLabel: {
+      type: String,
+      default: "1em"
+    },
+    sizeIndex: {
+      type: String,
+      default: "1em"
+    },
+    sizePoint: {
+      type: String,
+      default: "5"
     }
   },
   data() {
@@ -134,14 +147,6 @@ export default {
 .axes {
   stroke: black;
   stroke-width: 2.2;
-}
-
-.label {
-  font-size: 1em;
-}
-
-.index {
-  font-size: 0.8em;
 }
 
 .point:hover {
