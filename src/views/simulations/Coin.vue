@@ -1,41 +1,39 @@
 <template>
-<div>
+<div class="gridcontainer">
 
-  <header class="nav">
-    <h1 class="nav-logo">Statistismic
-      <img class="nav-logo" src="https://raw.githubusercontent.com/Statismic/ui/master/src/assets/logo/logo_basic.png" height=40px width=40px/>
-    </h1>
-  </header>
-
-  <h1 class="description">
-    Coin Flip Simmulation
-  </h1>
   <div class="input">
+    <div>I want to:</div> 
     <form action="#">
-        # of coins : <input type="number" v-model="coins"><br>
-        # of experiments : <input type="number" v-model="exper"><br>
-        probability of success (heads) : <input type="number" v-model="probability"><br>
-        hide coin visualization <input type="checkbox" v-model="hidden"><br>
+        <div class="tab">flip <input type="number" v-model="coins"> coin(s)</div>
+        <div class="tab">run <input type="number" v-model="exper"> experiment(s)</div>
+        <div class="tab"> have a <input type="number" v-model="probability"> probability of success (heads)</div>
+        <div class="tab">hide coin visualization <input type="checkbox" v-model="hidden"></div>
         <button type="button" @click="run">Run Experiment</button>
     </form>
       <!-- TODO restrict some input to decimal point -->
   </div>
-  <div class="short-graph">This is the short-term Graph</div>
+  <div class="short-graph">
+    <scatter-plot label-x="Ratio" label-y="Experiment(s)" :data-x="xDataShort" :data-y="yDataShort"/>
+  </div>
   <div class="output">
     <p v-show="!hidden">{{coinString}}</p>
     <p v-html="timerString"></p>
   </div>
-  <div class="long-graph">This is the long-term Graph</div>
-  <footer class="foot">Just pretend I'm a super rad footer</footer>
-  
-
+  <div class="long-graph">
+    <scatter-plot label-x="Ratio" label-y="Trials" :data-x="xDataLong" :data-y="yDataLong"/>
+  </div>
 
 </div>
 </template>
 
 
 <script>
+import ScatterPlot from "@/components/plots/Scatter.vue";
+
 export default {
+  components: {
+    ScatterPlot
+  },
   data() {
     return {
       coins: 1,
@@ -46,12 +44,18 @@ export default {
       exper: 1,
       probability: 0.5,
       hidden: false,
+      xDataShort: [0, 1],
+      yDataShort: [0, 7],
+      xDataLong: [0, 1],
+      yDataLong: [0, 7],
       accuracy: 1000 //decimal accuracy s.t. we weight the random probability
     };
   },
   methods: {
     doExper() {
       this.coinString = "";
+      let currentTotal = 0;
+      let currentHead = 0;
       let processedProb = Math.round(this.probability * this.accuracy);
       if (this.coins < 0 || this.exper < 0) return;
       for (let j = 0; j < this.exper; j++) {
@@ -60,8 +64,13 @@ export default {
           this.coinString += +x;
           this.coinString += "\t";
           this.total++;
-          if (x === true) this.heads++;
+          currentTotal++;
+          if (x === true) {
+            this.heads++;
+            currentHead++;
+          }
         }
+        this.xDataShort.push((currentHead / currentTotal).toPrecision(2));
       }
     },
     run() {
@@ -70,7 +79,7 @@ export default {
       let t1 = performance.now();
       this.timerString =
         "Call took " +
-        (t1 - t0) +
+        (t1 - t0).toFixed(1) +
         " milliseconds." +
         "<br>Heads : " +
         this.heads +
@@ -82,17 +91,20 @@ export default {
   },
   watch: {
     coins(val) {
-      this.coins = Math.round(val);
+      this.coins = Math.abs(Math.round(val));
     },
     exper(val) {
-      this.exper = Math.round(val);
+      this.exper = Math.abs(Math.round(val));
+    },
+    probability(val) {
+      this.probability = Math.abs(val % 1);
     }
   }
 };
 </script>
 
 <style scoped>
-div {
+.gridcontainer {
   line-height: 1.6;
   margin: 0;
   padding: 0;
@@ -100,58 +112,41 @@ div {
 
   display: grid;
   grid-template:
-    "nav nav nav nav" auto
-    "description description description description" auto
-    ". input short-graph ." 39vh
-    ". output long-graph ." 39vh
-    "foot foot foot foot" auto
-    / 1fr minmax(15em, 3fr) minmax(30em, 6fr) 1fr;
+    "input short-graph" 49vh
+    "output long-graph" 49vh
+    / minmax(15em, 30%) minmax(30em, 70%);
   grid-column-gap: 1.5em;
+  grid-row-gap: 1.5em;
 }
 
-.nav {
-  grid-area: nav;
-  background: #005960;
-}
-.nav-logo {
-  text-align: left;
-  color: white;
-}
-.description {
-  margin: 0;
-  padding: 0;
-  grid-area: description;
-  text-align: center;
-  background: #056f78;
-}
 .input {
-  margin-top: 2em;
+  margin-top: 1.5em;
+  margin-left: 1.5em;
   padding: 1.5em;
   grid-area: input;
   background: lightcoral;
 }
 .short-graph {
-  margin-top: 2em;
-  padding: 1.5em;
+  margin-right: 1.5em;
+  margin-top: 1.5em;
   grid-area: short-graph;
   background: #86d5db;
 }
 .output {
-  margin-top: 2em;
-  margin-bottom: 2em;
+  margin-left: 1.5em;
+  margin-bottom: 1.5em;
   padding: 1.5em;
   grid-area: output;
   background: #5acdd6;
 }
 .long-graph {
-  margin-top: 2em;
-  margin-bottom: 2em;
+  margin-right: 1.5em;
+  margin-bottom: 1.5em;
   padding: 1.5em;
   grid-area: long-graph;
   background: #5acdd6;
 }
-.foot {
-  grid-area: foot;
-  background: #005960;
+.tab {
+  margin-left: 15px;
 }
 </style>
