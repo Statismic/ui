@@ -54,33 +54,33 @@ export default {
   methods: {
     doExper() {
       this.coinString = "";
-      let trialTotal = 0;
-      let experiementTotal = 0;
       let trialHead = 0;
+      trialHead = 0;
       let experiementHead = 0;
       let processedProb = Math.round(this.probability * this.accuracy);
       if (this.coins < 0 || this.exper < 0) return;
       for (let j = 0; j < this.exper; j++) {
         for (let i = 0; i < this.coins; i++) {
           let x = Math.round(Math.random() * this.accuracy) <= processedProb;
-          this.coinString += +x;
-          this.coinString += "\t";
+          if (!this.hidden) {
+            // save computation by onlyb building the coin visualization
+            //    string if the user wants it
+            this.coinString += +x;
+            this.coinString += "\t";
+          }
           this.total++;
-          experiementTotal++;
-          trialTotal++;
           if (x === true) {
             this.heads++;
             experiementHead++;
             trialHead++;
           }
         }
-        this.xDataShort.push(
-          (experiementHead / experiementTotal).toPrecision(2)
-        );
-        experiementTotal = 0;
+        this.xDataShort.push((experiementHead / this.coins).toPrecision(2));
         experiementHead = 0;
       }
-      this.xDataLong.push((trialHead / trialTotal).toPrecision(2));
+      this.xDataLong.push(
+        (trialHead / (this.coins * this.exper)).toPrecision(2)
+      );
     },
     run() {
       let t0 = performance.now();
