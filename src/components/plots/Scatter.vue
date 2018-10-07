@@ -55,6 +55,20 @@
 
 <script>
 export default {
+  /**
+    label-x: label for x axis
+    label-y: label for y axis
+    data-x: an array of x values
+    data-y: an array of y values
+    padding: space between parent and the plot
+    color-label: color for label-x and label-y
+    color-index: color for data-x and data-y
+    color-point: color for points in the plot
+    color-highlighter: color for helper lines when you hover points
+    size-label: sizes of label-x and label-y
+    size-index: sizes of data-x and data-y
+    size-point: sizes of points in the plot
+   */
   props: {
     labelX: String,
     labelY: String,
