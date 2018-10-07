@@ -133,8 +133,9 @@ export default {
   },
   methods: {
     resizeHandler() {
-      this.height = this.$refs.plot.clientHeight;
-      this.width = this.$refs.plot.clientWidth;
+      const { width, height } = this.$refs.plot.getBoundingClientRect();
+      this.height = height;
+      this.width = width;
       this.xGapHandler();
       this.yGapHandler();
     },
