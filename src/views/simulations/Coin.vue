@@ -45,17 +45,19 @@ export default {
       probability: 0.5,
       hidden: false,
       xDataShort: [0, 1],
-      yDataShort: [0, 7],
+      yDataShort: [0, 1],
       xDataLong: [0, 1],
-      yDataLong: [0, 7],
+      yDataLong: [0, 1],
       accuracy: 1000 //decimal accuracy s.t. we weight the random probability
     };
   },
   methods: {
     doExper() {
       this.coinString = "";
-      let currentTotal = 0;
-      let currentHead = 0;
+      let trialTotal = 0;
+      let experiementTotal = 0;
+      let trialHead = 0;
+      let experiementHead = 0;
       let processedProb = Math.round(this.probability * this.accuracy);
       if (this.coins < 0 || this.exper < 0) return;
       for (let j = 0; j < this.exper; j++) {
@@ -64,14 +66,21 @@ export default {
           this.coinString += +x;
           this.coinString += "\t";
           this.total++;
-          currentTotal++;
+          experiementTotal++;
+          trialTotal++;
           if (x === true) {
             this.heads++;
-            currentHead++;
+            experiementHead++;
+            trialHead++;
           }
         }
-        this.xDataShort.push((currentHead / currentTotal).toPrecision(2));
+        this.xDataShort.push(
+          (experiementHead / experiementTotal).toPrecision(2)
+        );
+        experiementTotal = 0;
+        experiementHead = 0;
       }
+      this.xDataLong.push((trialHead / trialTotal).toPrecision(2));
     },
     run() {
       let t0 = performance.now();
