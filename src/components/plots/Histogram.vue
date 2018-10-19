@@ -31,8 +31,8 @@
       {{ c.freq }}
     </text>
 
-    <rect class="bar"
-        :x="padding + index * barWidth" :y="height - padding - c.freq * gapY"
+    <rect class="bar" transform="scale(1,-1)"
+        :x="padding + index * barWidth" :y="-(height - padding)"
         :width="barWidth" :height="c.freq * gapY"
         :fill="colorBar" stroke-width="1" stroke="black"
         @mouseover="activeIndex=index"
@@ -206,10 +206,10 @@ export default {
 }
 
 .bar {
-  -webkit-transition: width 0.4s ease 0s, y 0.4s ease 0s; /* Safari */
-  -moz-transition: width 0.4s ease 0s, y 0.4s ease 0s;
-  -o-transition: width 0.4s ease 0s, y 0.4s ease 0s;
-  transition: width 0.4s ease 0s, y 0.4s ease 0s;
-  will-change: width, y;
+  -webkit-transition: width 0.4s ease 0s, height 0.4s ease 0s; /* Safari */
+  -moz-transition: width 0.4s ease 0s, height 0.4s ease 0s;
+  -o-transition: width 0.4s ease 0s, height 0.4s ease 0s;
+  transition: width 0.4s ease 0s, height 0.4s ease 0s;
+  will-change: width, height;
 }
 </style>
