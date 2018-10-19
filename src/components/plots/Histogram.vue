@@ -40,7 +40,7 @@
 
     <line class="highligher highlighter-x" 
       :x1="padding" :y1="height - padding - c.freq * gapY" 
-      :x2="padding + (c.value - counter[0].value) * barWidth" :y2="height - padding - c.freq * gapY" 
+      :x2="padding + index * barWidth" :y2="height - padding - c.freq * gapY" 
       :stroke="colorHighlighter" stroke-dasharray="5,5"
       v-show="activeIndex===index"/>
   </g>
