@@ -13,14 +13,14 @@
       <!-- TODO restrict some input to decimal point -->
   </div>
   <div class="short-graph">
-    <scatter-plot label-x="Ratio" label-y="Experiment(s)" :data-x="xDataShort" :data-y="yDataShort"/>
+    <histogram label-x="Ratio" label-y="Experiment(s)" :data-x="xDataShort" :interval="0.1"/>
   </div>
   <div class="output">
     <p v-show="!hidden">{{coinString}}</p>
     <p v-html="timerString"></p>
   </div>
   <div class="long-graph">
-    <scatter-plot label-x="Ratio" label-y="Trials" :data-x="xDataLong" :data-y="yDataLong"/>
+    <histogram label-x="Ratio" label-y="Trials" :data-x="xDataLong" :interval="0.1"/>
   </div>
 
 </div>
@@ -28,11 +28,11 @@
 
 
 <script>
-import ScatterPlot from "@/components/plots/Scatter.vue";
+import Histogram from "@/components/plots/Histogram.vue";
 
 export default {
   components: {
-    ScatterPlot
+    Histogram
   },
   data() {
     return {
@@ -44,10 +44,8 @@ export default {
       exper: 1,
       probability: 0.5,
       hidden: false,
-      xDataShort: [0, 1],
-      yDataShort: [0, 1],
-      xDataLong: [0, 1],
-      yDataLong: [0, 1],
+      xDataShort: [],
+      xDataLong: [],
       accuracy: 1000 //decimal accuracy s.t. we weight the random probability
     };
   },
@@ -75,12 +73,10 @@ export default {
             trialHead++;
           }
         }
-        this.xDataShort.push((experiementHead / this.coins).toPrecision(2));
+        this.xDataShort.push(experiementHead / this.coins);
         experiementHead = 0;
       }
-      this.xDataLong.push(
-        (trialHead / (this.coins * this.exper)).toPrecision(2)
-      );
+      this.xDataLong.push(trialHead / (this.coins * this.exper));
     },
     run() {
       let t0 = performance.now();
