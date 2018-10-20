@@ -105,7 +105,7 @@ export default {
 .gridcontainer {
   background: lightblue;
   padding: 1.5em;
-  height: 100%;
+  min-height: 100%;
 
   display: grid;
   grid-template:
