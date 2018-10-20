@@ -1,10 +1,11 @@
 <template>
-<div>
+<div class="container">
   <span ref="tooltip" class="tooltip" v-show="activeIndex !== -1">
     <div>frequency: {{ currentFreq }}</div>
     <div>range: {{ currentRange }}</div>
   </span>
-  <svg ref="plot" class="plot">
+  
+  <svg ref="plot" class="container">
     <line class="axes axes-x" 
       :x1="padding" :y1="height - padding" 
       :x2="width - padding" :y2="height - padding" />
@@ -28,14 +29,6 @@
       :x="padding" :y="height - (padding - 20)"
       :fill="colorIndex" :font-size="sizeIndex" text-anchor="middle">
       {{ range[0] | round }}
-    </text>
-
-    <!-- The last label in y axes -->
-    <text class="index index-y"
-      :x="padding - 15" :y="height - padding + 5 - maxFreq * gapY"
-      :fill="colorIndex" :font-size="sizeIndex" text-anchor="middle" 
-      writing-mode="tb-rl" v-show="activeIndex === -1">
-      {{ maxFreq }}
     </text>
 
     <g v-for="(c, index) in counter" :key="index">
@@ -158,9 +151,6 @@ export default {
 
       return counter;
     },
-    maxFreq() {
-      return Math.max(...this.counter);
-    },
     currentFreq() {
       return this.activeIndex >= 0 ? this.counter[this.activeIndex] : 0;
     },
@@ -216,7 +206,7 @@ export default {
 </script>
 
 <style scoped>
-.plot {
+.container {
   width: 100%;
   height: 100%;
 }
