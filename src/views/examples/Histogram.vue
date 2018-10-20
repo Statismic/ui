@@ -14,7 +14,7 @@ export default {
   },
   data() {
     return {
-      xdata: [0.4, 0.3, 0.5]
+      xdata: [0.9]
     };
   },
   methods: {
