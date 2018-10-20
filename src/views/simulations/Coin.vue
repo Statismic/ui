@@ -112,14 +112,15 @@ export default {
     "input" auto
     "short-graph" minmax(200px, 400px)
     "long-graph" minmax(200px, 400px)
-    "output" auto;
+    "output" auto
+    / minmax(300px, auto);
   grid-gap: 1.5em;
 }
 @media screen and (min-width: 792px) {
   .gridcontainer {
     background: lightblue;
     padding: 1.5em;
-    height: 100%;
+    min-height: 100%;
 
     display: grid;
     grid-template:
