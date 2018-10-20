@@ -2,22 +2,20 @@
 <div class="gridcontainer">
 
   <div class="input">
-    <div>I want to:</div> 
-    <form action="#">
-        <div class="tab">flip <input type="number" v-model="coins"> coin(s)</div>
-        <div class="tab">run <input type="number" v-model="exper"> experiment(s)</div>
-        <div class="tab"> have a <input type="number" v-model="probability"> probability of success (heads)</div>
-        <div class="tab">hide coin visualization <input type="checkbox" v-model="hidden"></div>
-        <button type="button" @click="run">Run Experiment</button>
-    </form>
-      <!-- TODO restrict some input to decimal point -->
+    <div class="tab">flip <input type="number" v-model="coins"> coin(s)</div>
+    <div class="tab">run <input type="number" v-model="exper"> experiment(s)</div>
+    <div class="tab"> have a <input type="number" v-model="probability"> probability of success (heads)</div>
+    <div class="tab">hide coin visualization <input type="checkbox" v-model="hidden"></div>
+    <button type="button" @click="run">Run Experiment</button>
+    <!-- Give people a reason to use your form -->
+    <!-- TODO restrict some input to decimal point -->
   </div>
   <div class="short-graph">
     <histogram label-x="Ratio" label-y="Experiment(s)" :data-x="xDataShort" :interval="0.1"/>
   </div>
   <div class="output">
-    <p v-show="!hidden">{{coinString}}</p>
-    <p v-html="timerString"></p>
+    <div v-show="!hidden">{{coinString}}</div>
+    <div v-html="timerString"></div>
   </div>
   <div class="long-graph">
     <histogram label-x="Ratio" label-y="Trials" :data-x="xDataLong" :interval="0.1"/>
@@ -61,7 +59,7 @@ export default {
         for (let i = 0; i < this.coins; i++) {
           let x = Math.round(Math.random() * this.accuracy) <= processedProb;
           if (!this.hidden) {
-            // save computation by onlyb building the coin visualization
+            // save computation by only building the coin visualization
             //    string if the user wants it
             this.coinString += +x;
             this.coinString += "\t";
@@ -79,14 +77,9 @@ export default {
       this.xDataLong.push(trialHead / (this.coins * this.exper));
     },
     run() {
-      let t0 = performance.now();
       this.doExper();
-      let t1 = performance.now();
       this.timerString =
-        "Call took " +
-        (t1 - t0).toFixed(1) +
-        " milliseconds." +
-        "<br>Heads : " +
+        "Heads : " +
         this.heads +
         "<br>Total : " +
         this.total +
@@ -110,44 +103,48 @@ export default {
 
 <style scoped>
 .gridcontainer {
-  line-height: 1.6;
-  margin: 0;
-  padding: 0;
   background: lightblue;
+  padding: 1.5em;
+  height: 100%;
 
   display: grid;
   grid-template:
-    "input short-graph" 49vh
-    "output long-graph" 49vh
-    / minmax(15em, 30%) minmax(30em, 70%);
-  grid-column-gap: 1.5em;
-  grid-row-gap: 1.5em;
+    "input" auto
+    "short-graph" minmax(200px, 400px)
+    "long-graph" minmax(200px, 400px)
+    "output" auto;
+  grid-gap: 1.5em;
+}
+@media screen and (min-width: 792px) {
+  .gridcontainer {
+    background: lightblue;
+    padding: 1.5em;
+    height: 100%;
+
+    display: grid;
+    grid-template:
+      "input short-graph"
+      "output long-graph"
+      / minmax(15em, 40%) minmax(30em, 60%);
+    grid-gap: 1.5em;
+  }
 }
 
 .input {
-  margin-top: 1.5em;
-  margin-left: 1.5em;
   padding: 1.5em;
   grid-area: input;
   background: lightcoral;
 }
 .short-graph {
-  margin-right: 1.5em;
-  margin-top: 1.5em;
   grid-area: short-graph;
   background: #86d5db;
 }
 .output {
-  margin-left: 1.5em;
-  margin-bottom: 1.5em;
   padding: 1.5em;
   grid-area: output;
   background: #5acdd6;
 }
 .long-graph {
-  margin-right: 1.5em;
-  margin-bottom: 1.5em;
-  padding: 1.5em;
   grid-area: long-graph;
   background: #5acdd6;
 }
