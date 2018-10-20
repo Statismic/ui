@@ -18,33 +18,39 @@
     {{ labelY }}
   </text>
 
+  <!-- First index because of boundary issue -->
+  <text class="index index-x"
+    :x="padding" :y="height - (padding - 20)"
+    :fill="colorIndex" :font-size="sizeIndex" text-anchor="middle">
+    {{ range[0] | round }}
+  </text>
+
   <g v-for="(c, index) in counter" :key="index">
     <text class="index index-x"
-      :x="padding + (index + 0.5) * barWidth" :y="height - (padding - 20)"
+      :x="padding + (index + 1) * barWidth" :y="height - (padding - 20)"
       :fill="colorIndex" :font-size="sizeIndex" text-anchor="middle">
-      {{ c.value | round }}
+      {{ (index + 1) * interval | round }}
     </text>
     <text class="index index-y"
-      :x="padding - 15" :y="height - padding + 5 - c.freq * gapY"
+      :x="padding - 15" :y="height - padding + 5 - c * gapY"
       :fill="colorIndex" :font-size="sizeIndex" text-anchor="middle" 
       writing-mode="tb-rl">
-      {{ c.freq }}
+      {{ c }}
     </text>
 
     <rect class="bar" transform="scale(1,-1)"
         :x="padding + index * barWidth" :y="-(height - padding)"
-        :width="barWidth" :height="c.freq * gapY"
+        :width="barWidth" :height="c * gapY"
         :fill="colorBar" stroke-width="1" stroke="black"
         @mouseover="activeIndex=index"
         @mouseout="activeIndex=-1"/>
 
     <line class="highligher highlighter-x" 
-      :x1="padding" :y1="height - padding - c.freq * gapY" 
-      :x2="padding + index * barWidth" :y2="height - padding - c.freq * gapY" 
+      :x1="padding" :y1="height - padding - c * gapY" 
+      :x2="padding + index * barWidth" :y2="height - padding - c * gapY" 
       :stroke="colorHighlighter" stroke-dasharray="5,5"
       v-show="activeIndex===index"/>
   </g>
-
 </svg>
 </template>
 
@@ -69,6 +75,11 @@ export default {
     dataX: {
       type: Array,
       required: true
+    },
+    range: {
+      type: Array,
+      // Min-max of dataX [min, max)
+      default: () => [0, 1]
     },
     interval: {
       type: Number,
@@ -121,30 +132,11 @@ export default {
   computed: {
     counter() {
       if (this.dataX === undefined || this.dataX.length === 0) return [];
-      const sorted = [...this.dataX].sort();
-      const min = sorted[0];
-
-      let currentTreshold = min + this.interval;
-      let currentIndex = 0;
-      let counter = [
-        {
-          value: currentTreshold - this.interval / 2,
-          freq: 0
-        }
-      ];
-
-      for (let v of sorted) {
-        while (v > currentTreshold) {
-          currentTreshold += this.interval;
-          counter.push({
-            value: currentTreshold - this.interval / 2,
-            freq: 0
-          });
-          currentIndex++;
-        }
-
-        counter[currentIndex].freq++;
-      }
+      const hash = val => Math.floor(val / this.interval);
+      const n = Math.floor((this.range[1] - this.range[0]) / this.interval);
+      console.log(n);
+      let counter = Array.from({ length: n }, () => 0);
+      for (let v of this.dataX) counter[hash(v)]++;
 
       return counter;
     }
@@ -165,25 +157,23 @@ export default {
       this.barWidthHandler(this.counter);
       this.yGapHandler(this.counter);
     },
-    barWidthHandler(counter) {
+    barWidthHandler() {
       const length = this.width - 2 * this.padding;
-      this.barWidth = length / counter.length;
+      this.barWidth = length / this.counter.length;
     },
-    yGapHandler(counter) {
-      let max = Math.max(...counter.map(c => c.freq));
+    yGapHandler() {
+      let max = Math.max(...this.counter);
       const length = this.height - 2 * this.padding;
       this.gapY = length / max;
     }
   },
   filters: {
-    round(value) {
-      return value.toPrecision(2);
-    }
+    round: value => value.toPrecision(2)
   },
   watch: {
-    counter(newCounter) {
-      this.barWidthHandler(newCounter);
-      this.yGapHandler(newCounter);
+    counter() {
+      this.barWidthHandler();
+      this.yGapHandler();
     }
   }
 };
