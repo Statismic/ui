@@ -6,5 +6,9 @@ export const routes = [
   {
     path: "histogram",
     component: () => import(/* webpackChunkName: "plots" */ "./Histogram.vue")
+  },
+  {
+    path: "button",
+    component: () => import(/* webpackChunkName: "components" */ "./Button.vue")
   }
 ];
