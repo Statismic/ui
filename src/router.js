@@ -17,12 +17,12 @@ export default new Router({
     {
       path: "/app/simulations",
       component: AppContainer,
-      children: [{ path: "", component: PageNotFound }, ...simulationsRoutes]
+      children: [...simulationsRoutes]
     },
     {
       path: "/examples",
       component: AppContainer,
-      children: [{ path: "", component: PageNotFound }, ...examplesRoutes]
+      children: [...examplesRoutes]
     },
     {
       path: "*",
