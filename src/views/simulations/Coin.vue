@@ -103,7 +103,6 @@ export default {
 
 <style scoped>
 .gridcontainer {
-  background: lightblue;
   padding: 1.5em;
   min-height: 100%;
 
@@ -118,7 +117,6 @@ export default {
 }
 @media screen and (min-width: 792px) {
   .gridcontainer {
-    background: lightblue;
     padding: 1.5em;
     min-height: 100%;
 
@@ -134,20 +132,16 @@ export default {
 .input {
   padding: 1.5em;
   grid-area: input;
-  background: lightcoral;
 }
 .short-graph {
   grid-area: short-graph;
-  background: #86d5db;
 }
 .output {
   padding: 1.5em;
   grid-area: output;
-  background: #5acdd6;
 }
 .long-graph {
   grid-area: long-graph;
-  background: #5acdd6;
 }
 .tab {
   margin-left: 15px;
