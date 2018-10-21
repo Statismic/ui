@@ -1,16 +1,18 @@
 <template>
 <div>
   <histogram label-x="X Label" label-y="Y Label" :data-x="xdata" :interval="0.1" style="height: 600px;"/>
-  <button @click="add">Add</button>
+  <Button color-button="gray" @click="add" style="margin: 60px auto;">Add</Button>
 </div>
 </template>
 
 <script>
 import Histogram from "@/core/plots/Histogram.vue";
+import Button from "@/core/components/Button.vue";
 
 export default {
   components: {
-    Histogram
+    Histogram,
+    Button
   },
   data() {
     return {

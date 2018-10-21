@@ -36,6 +36,7 @@
   grid-area: content;
   background: white;
   box-shadow: 0 2px 10px 8px rgba(0, 0, 0, 0.2);
+  padding: 20px;
   width: 100%;
 }
 </style>
