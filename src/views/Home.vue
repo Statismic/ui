@@ -35,9 +35,9 @@
 <script>
 import categories from "@/assets/data/categories.json";
 import Fuse from "fuse.js";
-import Category from "@/components/Category.vue";
-import CategoryModal from "@/components/CategoryModal.vue";
-import SearchResult from "@/components/SearchResult.vue";
+import Category from "@/core/partials/Category.vue";
+import CategoryModal from "@/core/partials/CategoryModal.vue";
+import SearchResult from "@/core/partials/SearchResult.vue";
 
 export default {
   name: "home",

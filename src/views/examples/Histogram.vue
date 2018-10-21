@@ -6,7 +6,7 @@
 </template>
 
 <script>
-import Histogram from "@/components/plots/Histogram.vue";
+import Histogram from "@/core/plots/Histogram.vue";
 
 export default {
   components: {

@@ -6,7 +6,7 @@
 </template>
 
 <script>
-import Notification from "@/components/Notification.vue";
+import Notification from "@/core/partials/Notification.vue";
 
 export default {
   name: "app",

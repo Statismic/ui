@@ -3,7 +3,7 @@
 </template>
 
 <script>
-import ScatterPlot from "@/components/plots/Scatter.vue";
+import ScatterPlot from "@/core/plots/Scatter.vue";
 
 export default {
   components: {
