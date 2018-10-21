@@ -192,9 +192,6 @@ export default {
       this.$refs.tooltip.style.top = e.pageY + "px";
     }
   },
-  filters: {
-    round: value => value.toPrecision(2)
-  },
   watch: {
     counter() {
       this.barWidthHandler();
