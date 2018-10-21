@@ -34,7 +34,6 @@
 
 <script>
 import categories from "@/assets/data/categories.json";
-import Fuse from "fuse.js";
 import Category from "@/core/partials/Category.vue";
 import CategoryModal from "@/core/partials/CategoryModal.vue";
 import SearchResult from "@/core/partials/SearchResult.vue";
@@ -47,30 +46,7 @@ export default {
     SearchResult
   },
   data() {
-    let list = [];
-    categories.forEach((category, index) => {
-      for (const app of category.apps) {
-        list.push({
-          id: index,
-          category: category.name,
-          name: app.name,
-          path: app.path
-        });
-      }
-    });
-
-    const options = {
-      shouldSort: true,
-      threshold: 0.6,
-      location: 0,
-      distance: 100,
-      maxPatternLength: 32,
-      minMatchCharLength: 1,
-      keys: ["category", "name"]
-    };
-
     return {
-      fuse: new Fuse(list, options),
       searchTerm: "",
       searchMode: false,
       searchResults: [],
@@ -97,7 +73,7 @@ export default {
       }
 
       this.searchMode = true;
-      this.searchResults = this.fuse.search(val);
+      this.searchResults = this.$search(val);
     }
   }
 };

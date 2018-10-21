@@ -1,5 +1,6 @@
 import Vue from "vue";
 import VueParticles from "vue-particles";
+import { SearchPlugin } from "./core/plugins";
 import App from "./App.vue";
 import router from "./router";
 import store from "./store";
@@ -7,6 +8,7 @@ import "./registerServiceWorker";
 import "./core/filters";
 
 Vue.use(VueParticles);
+Vue.use(SearchPlugin);
 Vue.config.productionTip = false;
 
 new Vue({
