@@ -140,13 +140,13 @@ export default {
   },
   computed: {
     counter() {
-      if (this.dataX === undefined || this.dataX.length === 0) return [];
       const n = Math.floor((this.range[1] - this.range[0]) / this.interval);
+      let counter = Array.from({ length: n }, () => 0);
+      if (this.dataX === undefined || this.dataX.length === 0) return counter;
       const hash = val => {
         const h = Math.floor(val / this.interval);
         return h === n ? h - 1 : h; // This is to handle the last value
       };
-      let counter = Array.from({ length: n }, () => 0);
       for (let v of this.dataX) counter[hash(v)]++;
 
       return counter;
@@ -175,7 +175,6 @@ export default {
       const { width, height } = this.$refs.plot.getBoundingClientRect();
       this.height = height;
       this.width = width;
-      if (this.dataX.length === 0) return;
       this.barWidthHandler(this.counter);
       this.yGapHandler(this.counter);
     },
