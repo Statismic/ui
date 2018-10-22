@@ -1,9 +1,8 @@
-import _Vue from "vue";
 import categories from "@/assets/data/categories.json";
 import Fuse from "fuse.js";
 
 export const SearchPlugin = {
-  install(Vue, options) {
+  install(Vue) {
     let list = [];
     categories.forEach((category, index) => {
       for (const app of category.apps) {
