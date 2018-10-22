@@ -31,7 +31,7 @@
 .header {
   grid-area: header;
   display: grid;
-  background: #60599e;
+  background: #00838f;
   box-shadow: 0 2px 15px 4px rgba(0, 0, 0, 0.2);
   z-index: 5;
   padding-left: 10px;
@@ -86,5 +86,9 @@
 h3 {
   margin-block-start: 0;
   margin-block-end: 0;
+}
+
+a {
+  text-decoration: none;
 }
 </style>
