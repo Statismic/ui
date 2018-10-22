@@ -7,7 +7,6 @@
     </router-link>
     <h3 id="search">Search</h3>
   </div>
-  <div class="navbar"></div>
   <div class="content-container">
     <div class="content">
       <router-view></router-view>
@@ -21,24 +20,32 @@
 .container {
   display: grid;
   width: 100%;
-  grid-template-rows: minmax(40px, 65px) max-content auto minmax(30px, 50px);
+  grid-template-areas:
+    "header header header"
+    ". content-container ."
+    "footer footer footer";
+  grid-template-rows: minmax(40px, 50px) 1fr 50px;
+  grid-template-columns: 1fr 8fr 1fr;
 }
 
 .header {
+  grid-area: header;
   display: grid;
   background: #60599e;
   box-shadow: 0 2px 15px 4px rgba(0, 0, 0, 0.2);
   z-index: 5;
   padding-left: 10px;
   padding-right: 10px;
+  align-items: center;
   grid-template-areas: "banner . search";
-  grid-template-columns: max-content 1fr max-content;
+  grid-template-columns: auto 1fr auto;
 }
 
 #banner {
-  display: grid;
+  display: flex;
+  height: 100%;
   grid-area: banner;
-  grid-template-columns: auto auto;
+  align-items: center;
 }
 
 #banner:hover {
@@ -47,12 +54,12 @@
 
 #logo {
   max-height: 50%;
-  margin: auto 20px;
+  width: auto;
+  margin: 0 20px;
 }
 
 #title {
   color: whitesmoke;
-  margin: auto;
 }
 
 #search {
@@ -60,17 +67,24 @@
 }
 
 .content-container {
-  display: grid;
-  grid-template-columns: minmax(5px, 100px) auto minmax(5px, 100px);
-  grid-template-areas: ". content .";
+  grid-area: content-container;
   justify-items: center;
 }
 
 .content {
-  grid-area: content;
   background: white;
   box-shadow: 0 2px 10px 8px rgba(0, 0, 0, 0.2);
   padding: 20px;
   width: 100%;
+  height: 100%;
+}
+
+.footer {
+  grid-area: footer;
+}
+
+h3 {
+  margin-block-start: 0;
+  margin-block-end: 0;
 }
 </style>
