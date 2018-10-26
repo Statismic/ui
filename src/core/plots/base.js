@@ -1,4 +1,15 @@
 export default {
+  /** 
+  label-x: label for x axis
+  label-y: label for y axis
+  data-x: an array of x values
+  padding: space between parent and the plot
+  color-label: color for label-x and label-y
+  color-axis: color the axes lines
+  color-index: color for data-x and data-y
+  size-label: sizes of label-x and label-y
+  size-index: sizes of data-x and data-y
+  */
   props: {
     labelX: String,
     labelY: String,
@@ -30,7 +41,7 @@ export default {
     },
     sizeAxes: {
       type: String,
-      default: 2.2
+      default: "2.2"
     },
     sizeIndex: {
       type: String,
