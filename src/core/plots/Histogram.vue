@@ -6,12 +6,14 @@
   </span>
   
   <svg ref="plot" class="container">
-    <line class="axes axes-x" 
+    <line class="axes" 
       :x1="padding" :y1="height - padding" 
-      :x2="width - padding" :y2="height - padding" />
-    <line class="axes axes-y" 
+      :x2="width - padding" :y2="height - padding" 
+      :stroke="colorAxes" :stroke-width="sizeAxes"/>
+    <line class="axes" 
       :x1="padding" :y1="height - padding" 
-      :x2="padding" :y2="padding" />
+      :x2="padding" :y2="padding" 
+      :stroke="colorAxes" :stroke-width="sizeAxes"/>
 
     <text class="label label-x"
       :x="width / 2" :y="height - padding + 45" :fill="colorLabel"
@@ -64,6 +66,8 @@
 </template>
 
 <script>
+import BaseMixins from "./base";
+
 export default {
   /**
     label-x: label for x axis
@@ -72,19 +76,15 @@ export default {
     range: range of min max of data-x
     padding: space between parent and the plot
     color-label: color for label-x and label-y
+    color-axis: color the axes lines
     color-index: color for data-x and data-y
     color-bar: color for bars in the histogram
     color-highlighter: color for helper lines when you hover bars 
     size-label: sizes of label-x and label-y
     size-index: sizes of data-x and data-y
    */
+  mixins: [BaseMixins],
   props: {
-    labelX: String,
-    labelY: String,
-    dataX: {
-      type: Array,
-      required: true
-    },
     range: {
       type: Array,
       // Min-max of dataX [min, max]
@@ -96,18 +96,6 @@ export default {
     },
 
     // Design Customizations
-    padding: {
-      padding: Number,
-      default: 50
-    },
-    colorLabel: {
-      type: String,
-      default: "black"
-    },
-    colorIndex: {
-      type: String,
-      default: "black"
-    },
     colorBar: {
       type: String,
       default: "green"
@@ -115,26 +103,10 @@ export default {
     colorHighlighter: {
       type: String,
       default: "black"
-    },
-    sizeLabel: {
-      type: String,
-      default: "1em"
-    },
-    sizeIndex: {
-      type: String,
-      default: "1em"
-    },
-    sizePoint: {
-      type: String,
-      default: "5"
     }
   },
   data() {
     return {
-      height: 0,
-      width: 0,
-      barWidth: 0,
-      gapY: 0,
       activeIndex: -1 // Index based on xdata
     };
   },
@@ -159,34 +131,24 @@ export default {
       const low = this.activeIndex * this.interval;
       const high = low + this.interval;
       return `${low.toPrecision(2)} - ${high.toPrecision(2)}`;
+    },
+    barWidth() {
+      const length = this.width - 2 * this.padding;
+      return length / this.counter.length;
+    },
+    gapY() {
+      let max = Math.max(...this.counter);
+      const length = this.height - 2 * this.padding;
+      return length / max;
     }
   },
   mounted() {
-    this.resizeHandler();
-    window.addEventListener("resize", this.resizeHandler);
     window.addEventListener("mousemove", this.tooltipHandler);
   },
   beforeDestroy() {
-    window.removeEventListener("resize", this.resizeHandler);
     window.removeEventListener("mousemove", this.tooltipHandler);
   },
   methods: {
-    resizeHandler() {
-      const { width, height } = this.$refs.plot.getBoundingClientRect();
-      this.height = height;
-      this.width = width;
-      this.barWidthHandler(this.counter);
-      this.yGapHandler(this.counter);
-    },
-    barWidthHandler() {
-      const length = this.width - 2 * this.padding;
-      this.barWidth = length / this.counter.length;
-    },
-    yGapHandler() {
-      let max = Math.max(...this.counter);
-      const length = this.height - 2 * this.padding;
-      this.gapY = length / max;
-    },
     tooltipHandler(e) {
       this.$refs.tooltip.style.left = e.pageX + "px";
       this.$refs.tooltip.style.top = e.pageY + "px";
@@ -202,15 +164,7 @@ export default {
 </script>
 
 <style scoped>
-.container {
-  width: 100%;
-  height: 100%;
-}
-
-.axes {
-  stroke: black;
-  stroke-width: 2.2;
-}
+@import "./base.css";
 
 .bar:hover {
   fill: gray;
