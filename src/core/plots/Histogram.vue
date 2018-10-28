@@ -6,39 +6,26 @@
   </span>
   
   <svg ref="plot" class="container">
-    <line class="axes axes-x" 
-      :x1="padding" :y1="height - padding" 
-      :x2="width - padding" :y2="height - padding" />
-    <line class="axes axes-y" 
-      :x1="padding" :y1="height - padding" 
-      :x2="padding" :y2="padding" />
-
-    <text class="label label-x"
-      :x="width / 2" :y="height - padding + 45" :fill="colorLabel"
-      :font-size="sizeLabel" text-anchor="middle">
-      {{ labelX }}
-    </text>
-    <text class="label label-y"
-      :x="padding - 40" :y="height / 2" :fill="colorLabel"
-      :font-size="sizeLabel" text-anchor="middle" writing-mode="tb-rl">
-      {{ labelY }}
-    </text>
+    <x-axis :ctx="this"/>
+    <y-axis :ctx="this"/>
+    <x-label :ctx="this"/>
+    <y-label :ctx="this"/>
 
     <!-- First index because of boundary issue -->
-    <text class="index index-x"
+    <text
       :x="padding" :y="height - (padding - 20)"
       :fill="colorIndex" :font-size="sizeIndex" text-anchor="middle">
       {{ range[0] | round }}
     </text>
 
     <g v-for="(c, index) in counter" :key="index">
-      <text class="index index-x"
+      <text
         :x="padding + (index + 1) * barWidth" :y="height - (padding - 20)"
         :fill="colorIndex" :font-size="sizeIndex" text-anchor="middle">
         {{ (index + 1) * interval | round }}
       </text>
 
-      <text class="index index-y"
+      <text
         :x="padding - 15" :y="height - padding + 5 - c * gapY"
         :fill="colorIndex" :font-size="sizeIndex" text-anchor="middle" 
         writing-mode="tb-rl"
@@ -46,14 +33,14 @@
         {{ c }}
       </text>
 
-      <rect class="bar" transform="scale(1,-1)"
+      <rect class="bar hover" transform="scale(1,-1)"
           :x="padding + index * barWidth" :y="-(height - padding)"
           :width="barWidth" :height="c * gapY"
           :fill="colorBar" stroke-width="1" stroke="black"
           @mouseover="activeIndex=index"
           @mouseout="activeIndex=-1"/>
 
-      <line class="highligher highlighter-x" 
+      <line
         :x1="padding" :y1="height - padding - c * gapY" 
         :x2="padding + index * barWidth" :y2="height - padding - c * gapY" 
         :stroke="colorHighlighter" stroke-dasharray="5,5"
@@ -64,27 +51,17 @@
 </template>
 
 <script>
+import BaseMixins from "./base";
+import { XAxis, YAxis, XLabel, YLabel } from "./parts";
+
 export default {
   /**
-    label-x: label for x axis
-    label-y: label for y axis
-    data-x: an array of x values
     range: range of min max of data-x
-    padding: space between parent and the plot
-    color-label: color for label-x and label-y
-    color-index: color for data-x and data-y
     color-bar: color for bars in the histogram
     color-highlighter: color for helper lines when you hover bars 
-    size-label: sizes of label-x and label-y
-    size-index: sizes of data-x and data-y
    */
+  mixins: [BaseMixins],
   props: {
-    labelX: String,
-    labelY: String,
-    dataX: {
-      type: Array,
-      required: true
-    },
     range: {
       type: Array,
       // Min-max of dataX [min, max]
@@ -96,18 +73,6 @@ export default {
     },
 
     // Design Customizations
-    padding: {
-      padding: Number,
-      default: 50
-    },
-    colorLabel: {
-      type: String,
-      default: "black"
-    },
-    colorIndex: {
-      type: String,
-      default: "black"
-    },
     colorBar: {
       type: String,
       default: "green"
@@ -115,26 +80,16 @@ export default {
     colorHighlighter: {
       type: String,
       default: "black"
-    },
-    sizeLabel: {
-      type: String,
-      default: "1em"
-    },
-    sizeIndex: {
-      type: String,
-      default: "1em"
-    },
-    sizePoint: {
-      type: String,
-      default: "5"
     }
+  },
+  components: {
+    YAxis,
+    XAxis,
+    XLabel,
+    YLabel
   },
   data() {
     return {
-      height: 0,
-      width: 0,
-      barWidth: 0,
-      gapY: 0,
       activeIndex: -1 // Index based on xdata
     };
   },
@@ -159,70 +114,40 @@ export default {
       const low = this.activeIndex * this.interval;
       const high = low + this.interval;
       return `${low.toPrecision(2)} - ${high.toPrecision(2)}`;
+    },
+    barWidth() {
+      const length = this.width - 2 * this.padding;
+      return length / this.counter.length;
+    },
+    gapY() {
+      let max = Math.max(...this.counter);
+      const length = this.height - 2 * this.padding;
+      return length / max;
     }
   },
   mounted() {
-    this.resizeHandler();
-    window.addEventListener("resize", this.resizeHandler);
     window.addEventListener("mousemove", this.tooltipHandler);
   },
   beforeDestroy() {
-    window.removeEventListener("resize", this.resizeHandler);
     window.removeEventListener("mousemove", this.tooltipHandler);
   },
   methods: {
-    resizeHandler() {
-      const { width, height } = this.$refs.plot.getBoundingClientRect();
-      this.height = height;
-      this.width = width;
-      this.barWidthHandler(this.counter);
-      this.yGapHandler(this.counter);
-    },
-    barWidthHandler() {
-      const length = this.width - 2 * this.padding;
-      this.barWidth = length / this.counter.length;
-    },
-    yGapHandler() {
-      let max = Math.max(...this.counter);
-      const length = this.height - 2 * this.padding;
-      this.gapY = length / max;
-    },
     tooltipHandler(e) {
       this.$refs.tooltip.style.left = e.pageX + "px";
       this.$refs.tooltip.style.top = e.pageY + "px";
-    }
-  },
-  watch: {
-    counter() {
-      this.barWidthHandler();
-      this.yGapHandler();
     }
   }
 };
 </script>
 
 <style scoped>
-.container {
-  width: 100%;
-  height: 100%;
-}
-
-.axes {
-  stroke: black;
-  stroke-width: 2.2;
-}
-
-.bar:hover {
-  fill: gray;
-  cursor: pointer;
-}
+@import "./base.css";
 
 .bar {
-  -webkit-transition: width 0.4s ease 0s, height 0.4s ease 0s, fill 0.4s ease 0s; /* Safari */
-  -moz-transition: width 0.4s ease 0s, height 0.4s ease 0s, fill 0.4s ease 0s;
-  -o-transition: width 0.4s ease 0s, height 0.4s ease 0s, fill 0.4s ease 0s;
-  transition: width 0.4s ease 0s, height 0.4s ease 0s, fill 0.4s ease 0s;
-  will-change: width, height, fill;
+  -webkit-transition: width 0.4s ease 0s, height 0.4s ease 0s;
+  -moz-transition: width 0.4s ease 0s, height 0.4s ease 0s;
+  -o-transition: width 0.4s ease 0s, height 0.4s ease 0s;
+  transition: width 0.4s ease 0s, height 0.4s ease 0s;
 }
 
 .tooltip {
