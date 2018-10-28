@@ -1,24 +1,9 @@
 <template>
 <svg ref="plot" class="container">
-  <line
-    :x1="padding" :y1="height - padding" 
-    :x2="width - padding" :y2="height - padding" 
-    :stroke="colorAxes" :stroke-width="sizeAxes"/>
-  <line
-    :x1="padding" :y1="height - padding" 
-    :x2="padding" :y2="padding" 
-    :stroke="colorAxes" :stroke-width="sizeAxes"/>
-
-  <text
-    :x="width / 2" :y="height - padding + 45" :fill="colorLabel"
-    :font-size="sizeLabel" text-anchor="middle">
-    {{ labelX }}
-  </text>
-  <text
-    :x="padding - 40" :y="height / 2" :fill="colorLabel"
-    :font-size="sizeLabel" text-anchor="middle" writing-mode="tb-rl">
-    {{ labelY }}
-  </text>
+  <y-axis :ctx="this"/>
+  <x-axis :ctx="this"/>
+  <y-label :ctx="this"/>
+  <x-label :ctx="this"/>
 
   <g v-for="(v, index) in dataX" :key="index">
     <text
@@ -56,6 +41,7 @@
 
 <script>
 import BaseMixins from "./base";
+import { XAxis, YAxis, XLabel, YLabel } from "./parts";
 
 export default {
   /**
@@ -99,6 +85,12 @@ export default {
       const length = this.height - 2 * this.padding;
       return length / max;
     }
+  },
+  components: {
+    YAxis,
+    XAxis,
+    XLabel,
+    YLabel
   }
 };
 </script>

@@ -6,25 +6,10 @@
   </span>
   
   <svg ref="plot" class="container">
-    <line
-      :x1="padding" :y1="height - padding" 
-      :x2="width - padding" :y2="height - padding" 
-      :stroke="colorAxes" :stroke-width="sizeAxes"/>
-    <line
-      :x1="padding" :y1="height - padding" 
-      :x2="padding" :y2="padding" 
-      :stroke="colorAxes" :stroke-width="sizeAxes"/>
-
-    <text
-      :x="width / 2" :y="height - padding + 45" :fill="colorLabel"
-      :font-size="sizeLabel" text-anchor="middle">
-      {{ labelX }}
-    </text>
-    <text
-      :x="padding - 40" :y="height / 2" :fill="colorLabel"
-      :font-size="sizeLabel" text-anchor="middle" writing-mode="tb-rl">
-      {{ labelY }}
-    </text>
+    <x-axis :ctx="this"/>
+    <y-axis :ctx="this"/>
+    <x-label :ctx="this"/>
+    <y-label :ctx="this"/>
 
     <!-- First index because of boundary issue -->
     <text
@@ -67,6 +52,7 @@
 
 <script>
 import BaseMixins from "./base";
+import { XAxis, YAxis, XLabel, YLabel } from "./parts";
 
 export default {
   /**
@@ -95,6 +81,12 @@ export default {
       type: String,
       default: "black"
     }
+  },
+  components: {
+    YAxis,
+    XAxis,
+    XLabel,
+    YLabel
   },
   data() {
     return {
