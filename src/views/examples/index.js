@@ -8,6 +8,10 @@ export const routes = [
     component: () => import(/* webpackChunkName: "plots" */ "./Histogram.vue")
   },
   {
+    path: "trendline",
+    component: () => import(/* webpackChunkName: "plots" */ "./Trendline.vue")
+  },
+  {
     path: "button",
     component: () => import(/* webpackChunkName: "components" */ "./Button.vue")
   }
