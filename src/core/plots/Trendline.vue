@@ -9,32 +9,32 @@
 
   <g v-for="(v, index) in dataX" :key="index">
     <text
-      :x="padding + v * gapX" :y="height - (padding - 20)"
+      :x="computeX(v)" :y="computeY(0) + 20"
       :fill="colorIndex" :font-size="sizeIndex" text-anchor="middle">
       {{ v }}
     </text>
     <text
-      :x="padding - 15" :y="height - padding + 5 - dataY[index] * gapY"
+      :x="computeX(0) - 15" :y="computeY(dataY[index]) + 5"
       :fill="colorIndex" :font-size="sizeIndex" text-anchor="middle" 
       writing-mode="tb-rl">
       {{ dataY[index] }}
     </text>
 
     <circle class="hover"
-      :cx="padding + v * gapX" 
-      :cy="height - padding - dataY[index] * gapY" 
+      :cx="computeX(v)" 
+      :cy="computeY(dataY[index])" 
       :r="sizePoint" :fill="colorPoint"
       @mouseover="activeIndex=index"
       @mouseout="activeIndex=-1"/>
 
     <line 
-      :x1="padding" :y1="height - padding - dataY[index] * gapY" 
-      :x2="padding + v * gapX - 3" :y2="height - padding - dataY[index] * gapY" 
+      :x1="computeX(0)" :y1="computeY(dataY[index])" 
+      :x2="computeX(v)" :y2="computeY(dataY[index])" 
       :stroke="colorHighlighter" stroke-dasharray="5,5"
       v-show="activeIndex===index"/>
     <line
-      :x1="padding + v * gapX" :y1="height - padding" 
-      :x2="padding + v * gapX" :y2="height - padding + 3 - dataY[index] * gapY" 
+      :x1="computeX(v)" :y1="computeY(0)" 
+      :x2="computeX(v)" :y2="computeY(dataY[index])" 
       :stroke="colorHighlighter" stroke-dasharray="5,5"
       v-show="activeIndex===index"/>
   </g>
@@ -77,27 +77,25 @@ export default {
     };
   },
   computed: {
-    gapX() {
-      const max = Math.max(...this.dataX);
-      const length = this.width - 2 * this.padding;
-      return length / max;
-    },
-    gapY() {
+    height() {
       const max = Math.max(...this.dataY);
-      const length = this.height - 2 * this.padding;
-      return length / max;
+      const min = Math.min(...this.dataY);
+      return max - min;
+    },
+    width() {
+      const max = Math.max(...this.dataX);
+      const min = Math.min(...this.dataX);
+      return max - min;
     },
     path() {
       if (this.dataX.length < 2) return "";
       let paths = [];
       const x = this.dataX;
       const y = this.dataY;
-      const getX = x => this.padding + x * this.gapX;
-      const getY = y => this.height - this.padding - y * this.gapY;
 
-      paths.push(`M${getX(x[0])},${getY(y[0])}`);
+      paths.push(`M${this.computeX(x[0])},${this.computeY(y[0])}`);
       for (let i = 1; i < x.length; i++)
-        paths.push(`L${getX(x[i])},${getY(y[i])}`);
+        paths.push(`L${this.computeX(x[i])},${this.computeY(y[i])}`);
 
       return paths.join(" ");
     }

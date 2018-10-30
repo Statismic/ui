@@ -50,15 +50,31 @@ export default {
   },
   data() {
     return {
-      height: 0,
-      width: 0
+      containerHeight: 0,
+      containerWidth: 0
     };
+  },
+  computed: {
+    height() {},
+    width() {},
+    scaleX() {
+      return (this.containerWidth - 2 * this.padding) / this.width;
+    },
+    scaleY() {
+      return (this.containerHeight - 2 * this.padding) / this.height;
+    }
   },
   methods: {
     resizeHandler() {
       const { width, height } = this.$refs.plot.getBoundingClientRect();
-      this.height = height;
-      this.width = width;
+      this.containerHeight = height;
+      this.containerWidth = width;
+    },
+    computeX(x) {
+      return this.padding + x * this.scaleX;
+    },
+    computeY(y) {
+      return (this.height - y) * this.scaleY + this.padding;
     }
   },
   mounted() {
