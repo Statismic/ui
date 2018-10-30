@@ -24,7 +24,7 @@
     "header header header"
     ". content-container ."
     "footer footer footer";
-  grid-template-rows: minmax(40px, 50px) 1fr 50px;
+  grid-template-rows: 50px 1fr 50px;
   grid-template-columns: 1fr 8fr 1fr;
 }
 
@@ -39,6 +39,7 @@
   align-items: center;
   grid-template-areas: "banner . search";
   grid-template-columns: auto 1fr auto;
+  height: 50px;
 }
 
 #banner {
