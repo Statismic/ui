@@ -1,3 +1,10 @@
+function nIndex(size) {
+  const baseSize = 480;
+  const baseNIndex = 10;
+
+  return Math.floor((baseNIndex * size) / baseSize);
+}
+
 export default {
   /** 
   label-x: label for x axis
@@ -62,6 +69,12 @@ export default {
     },
     scaleY() {
       return (this.containerHeight - 2 * this.padding) / this.height;
+    },
+    nIndexX() {
+      return nIndex(this.containerWidth);
+    },
+    nIndexY() {
+      return nIndex(this.containerHeight);
     }
   },
   methods: {
