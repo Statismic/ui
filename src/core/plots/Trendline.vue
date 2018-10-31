@@ -10,13 +10,14 @@
   <g v-for="(v, index) in dataX" :key="index">
     <text
       :x="computeX(v)" :y="computeY(0) + 20"
-      :fill="colorIndex" :font-size="sizeIndex" text-anchor="middle">
+      :fill="colorIndex" :font-size="sizeIndex" text-anchor="middle"
+      v-if="index % indexMultiplierX === 0">
       {{ v | round }}
     </text>
     <text
       :x="computeX(0) - 15" :y="computeY(dataY[index]) + 5"
       :fill="colorIndex" :font-size="sizeIndex" text-anchor="middle" 
-      writing-mode="tb-rl">
+      writing-mode="tb-rl" v-if="index % indexMultiplierY === 0">
       {{ dataY[index] | round }}
     </text>
 
@@ -100,6 +101,12 @@ export default {
         paths.push(`L${this.computeX(x[i])},${this.computeY(y[i])}`);
 
       return paths.join(" ");
+    },
+    indexMultiplierX() {
+      return Math.ceil(this.dataX.length / this.nIndexX);
+    },
+    indexMultiplierY() {
+      return Math.ceil(this.dataY.length / this.nIndexX);
     }
   },
   components: {

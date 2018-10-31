@@ -21,7 +21,8 @@
     <g v-for="(c, index) in counter" :key="index">
       <text
         :x="computeX(index + 1)" :y="computeY(0) + 20"
-        :fill="colorIndex" :font-size="sizeIndex" text-anchor="middle">
+        :fill="colorIndex" :font-size="sizeIndex" text-anchor="middle"
+        v-if="index % indexMultiplierX === 0">
         {{ (index + 1) * interval | round }}
       </text>
 
@@ -121,6 +122,9 @@ export default {
     height() {
       const max = Math.max(...this.counter);
       return max === 0 ? 1 : max;
+    },
+    indexMultiplierX() {
+      return Math.ceil(this.counter.length / this.nIndexX);
     }
   },
   mounted() {
