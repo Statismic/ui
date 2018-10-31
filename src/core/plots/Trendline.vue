@@ -11,13 +11,13 @@
     <text
       :x="computeX(v)" :y="computeY(0) + 20"
       :fill="colorIndex" :font-size="sizeIndex" text-anchor="middle">
-      {{ v }}
+      {{ v | round }}
     </text>
     <text
       :x="computeX(0) - 15" :y="computeY(dataY[index]) + 5"
       :fill="colorIndex" :font-size="sizeIndex" text-anchor="middle" 
       writing-mode="tb-rl">
-      {{ dataY[index] }}
+      {{ dataY[index] | round }}
     </text>
 
     <circle class="hover"
@@ -78,14 +78,16 @@ export default {
   },
   computed: {
     height() {
-      const max = Math.max(...this.dataY);
-      const min = Math.min(...this.dataY);
-      return max - min;
+      const max = this.$math.safe(Math.max(...this.dataY));
+      const min = this.$math.safe(Math.min(...this.dataY));
+      const diff = max - min;
+      return diff === 0 ? 1 : diff;
     },
     width() {
-      const max = Math.max(...this.dataX);
-      const min = Math.min(...this.dataX);
-      return max - min;
+      const max = this.$math.safe(Math.max(...this.dataX));
+      const min = this.$math.safe(Math.min(...this.dataX));
+      const diff = max - min;
+      return diff === 0 ? 1 : diff;
     },
     path() {
       if (this.dataX.length < 2) return "";

@@ -76,14 +76,16 @@ export default {
   },
   computed: {
     height() {
-      const max = Math.max(...this.dataY);
-      const min = Math.min(...this.dataY);
-      return max - min;
+      const max = this.$math.safe(Math.max(...this.dataY));
+      const min = this.$math.safe(Math.min(...this.dataY));
+      const diff = max - min;
+      return diff === 0 ? 1 : diff;
     },
     width() {
-      const max = Math.max(...this.dataX);
-      const min = Math.min(...this.dataX);
-      return max - min;
+      const max = this.$math.safe(Math.max(...this.dataX));
+      const min = this.$math.safe(Math.min(...this.dataX));
+      const diff = max - min;
+      return diff === 0 ? 1 : diff;
     }
   },
   components: {
