@@ -11,14 +11,14 @@
     <!-- TODO restrict some input to decimal point -->
   </div>
   <div class="short-graph">
-    <histogram label-x="Ratio" label-y="Experiment(s)" :data-x="xDataShort" :interval="0.1"/>
+    <trendline label-x="X Label" label-y="Y Label" :data-x="xdata" :data-y="ydata"/>
   </div>
   <div class="output">
-    <div v-show="!hidden">{{coinString}}</div>
     <div v-html="timerString"></div>
+    <div v-show="!hidden">{{coinString}}</div>
   </div>
   <div class="long-graph">
-    <histogram label-x="Ratio" label-y="Trials" :data-x="xDataLong" :interval="0.1"/>
+    <histogram label-x="Ratio" label-y="Experiment(s)" :data-x="xDataShort" :interval="0.1"/>
   </div>
 
 </div>
@@ -27,31 +27,33 @@
 
 <script>
 import Histogram from "@/core/plots/Histogram.vue";
+import Trendline from "@/core/plots/Trendline.vue";
 
 export default {
   components: {
-    Histogram
+    Histogram,
+    Trendline
   },
   data() {
     return {
+      xdata: [],
+      ydata: [],
       coins: 1,
       coinString: "",
       timerString: "",
       heads: 0,
       total: 0,
       exper: 1,
+      experCounter: 0,
       probability: 0.5,
       hidden: false,
       xDataShort: [],
-      xDataLong: [],
       accuracy: 1000 //decimal accuracy s.t. we weight the random probability
     };
   },
   methods: {
     doExper() {
       this.coinString = "";
-      let trialHead = 0;
-      trialHead = 0;
       let experiementHead = 0;
       let processedProb = Math.round(this.probability * this.accuracy);
       if (this.coins < 0 || this.exper < 0) return;
@@ -68,13 +70,14 @@ export default {
           if (x === true) {
             this.heads++;
             experiementHead++;
-            trialHead++;
           }
         }
         this.xDataShort.push(experiementHead / this.coins);
+        this.xdata.push(this.experCounter);
+        this.experCounter++;
+        this.ydata.push(experiementHead / this.coins);
         experiementHead = 0;
       }
-      this.xDataLong.push(trialHead / (this.coins * this.exper));
     },
     run() {
       this.doExper();
