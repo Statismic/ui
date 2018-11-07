@@ -79,10 +79,13 @@ export default {
   },
   computed: {
     height() {
+      // TODO! This fix doesn't work when there's negative values
+      // const max = this.$math.safe(Math.max(...this.dataY));
+      // const min = this.$math.safe(Math.min(...this.dataY));
+      // const diff = max - min;
+      // return diff === 0 ? 1 : diff;
       const max = this.$math.safe(Math.max(...this.dataY));
-      const min = this.$math.safe(Math.min(...this.dataY));
-      const diff = max - min;
-      return diff === 0 ? 1 : diff;
+      return max === 0 ? 1 : max;
     },
     width() {
       const max = this.$math.safe(Math.max(...this.dataX));
@@ -106,7 +109,7 @@ export default {
       return Math.ceil(this.dataX.length / this.nIndexX);
     },
     indexMultiplierY() {
-      return Math.ceil(this.dataY.length / this.nIndexX);
+      return Math.ceil(this.dataY.length / this.nIndexY);
     }
   },
   components: {
