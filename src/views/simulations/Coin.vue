@@ -10,14 +10,14 @@
     <!-- Give people a reason to use your form -->
   </div>
   <div class="short-graph">
-    <trendline size-point="2.5" label-x="X Label" label-y="Y Label" :data-x="xdata" :data-y="ydata"/>
+    <trendline size-point="2.5" label-x="Experiment" label-y="Probability" :data-x="xdata" :data-y="ydata"/>
   </div>
   <div class="output">
     <div v-html="timerString"></div>
     <div v-show="!hidden">{{coinString}}</div>
   </div>
   <div class="long-graph">
-    <histogram label-x="Ratio" label-y="Experiment(s)" color-bar="brown" :data-x="xDataShort" :interval="0.1"/>
+    <histogram label-x="Ratio" label-y="Experiment(s)" color-bar="#A9E3F5" :data-x="xDataShort" :interval="0.1"/>
   </div>
 
 </div>
