@@ -74,11 +74,12 @@ export default {
         this.xdata.push(this.experCounter);
         this.experCounter++;
         this.ydata.push(experiementHead / this.coins);
-        if (this.experCounter > 50) {
-          this.xdata.pop(0);
-          this.ydata.pop(0);
-        }
         experiementHead = 0;
+      }
+      if (this.xdata.length > 50) {
+        const start = this.xdata.length - 50;
+        this.xdata = this.xdata.slice(start);
+        this.ydata = this.ydata.slice(start);
       }
     },
     run() {

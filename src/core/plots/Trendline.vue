@@ -9,33 +9,33 @@
 
   <g v-for="(v, index) in dataX" :key="index">
     <text
-      :x="computeX(v)" :y="computeY(0) + 20"
+      :x="computeX(v - minX)" :y="computeY(0) + 20"
       :fill="colorIndex" :font-size="sizeIndex" text-anchor="middle"
       v-if="index % indexMultiplierX === 0">
       {{ v | round }}
     </text>
     <text
-      :x="computeX(0) - 15" :y="computeY(dataY[index]) + 5"
+      :x="computeX(0) - 15" :y="computeY(dataY[index] - minY) + 5"
       :fill="colorIndex" :font-size="sizeIndex" text-anchor="middle" 
       writing-mode="tb-rl" v-if="index % indexMultiplierY === 0">
       {{ dataY[index] | round }}
     </text>
 
     <circle class="hover"
-      :cx="computeX(v)" 
-      :cy="computeY(dataY[index])" 
+      :cx="computeX(v - minX)" 
+      :cy="computeY(dataY[index] - minY)" 
       :r="sizePoint" :fill="colorPoint"
       @mouseover="activeIndex=index"
       @mouseout="activeIndex=-1"/>
 
     <line 
-      :x1="computeX(0)" :y1="computeY(dataY[index])" 
-      :x2="computeX(v)" :y2="computeY(dataY[index])" 
+      :x1="computeX(0)" :y1="computeY(dataY[index] - minY)" 
+      :x2="computeX(v - minX)" :y2="computeY(dataY[index] - minY)" 
       :stroke="colorHighlighter" stroke-dasharray="5,5"
       v-show="activeIndex===index"/>
     <line
-      :x1="computeX(v)" :y1="computeY(0)" 
-      :x2="computeX(v)" :y2="computeY(dataY[index])" 
+      :x1="computeX(v - minX)" :y1="computeY(0)" 
+      :x2="computeX(v - minX)" :y2="computeY(dataY[index] - minY)" 
       :stroke="colorHighlighter" stroke-dasharray="5,5"
       v-show="activeIndex===index"/>
   </g>
@@ -78,19 +78,20 @@ export default {
     };
   },
   computed: {
+    minX() {
+      return this.$math.safe(Math.min(...this.dataX));
+    },
+    minY() {
+      return this.$math.safe(Math.min(...this.dataY));
+    },
     height() {
-      // TODO! This fix doesn't work when there's negative values
-      // const max = this.$math.safe(Math.max(...this.dataY));
-      // const min = this.$math.safe(Math.min(...this.dataY));
-      // const diff = max - min;
-      // return diff === 0 ? 1 : diff;
       const max = this.$math.safe(Math.max(...this.dataY));
-      return max === 0 ? 1 : max;
+      const diff = max - this.minY;
+      return diff === 0 ? 1 : diff;
     },
     width() {
       const max = this.$math.safe(Math.max(...this.dataX));
-      const min = this.$math.safe(Math.min(...this.dataX));
-      const diff = max - min;
+      const diff = max - this.minX;
       return diff === 0 ? 1 : diff;
     },
     path() {
@@ -99,9 +100,15 @@ export default {
       const x = this.dataX;
       const y = this.dataY;
 
-      paths.push(`M${this.computeX(x[0])},${this.computeY(y[0])}`);
+      paths.push(
+        `M${this.computeX(x[0] - this.minX)},${this.computeY(y[0] - this.minY)}`
+      );
       for (let i = 1; i < x.length; i++)
-        paths.push(`L${this.computeX(x[i])},${this.computeY(y[i])}`);
+        paths.push(
+          `L${this.computeX(x[i] - this.minX)},${this.computeY(
+            y[i] - this.minY
+          )}`
+        );
 
       return paths.join(" ");
     },
