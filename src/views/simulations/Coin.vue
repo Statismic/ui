@@ -6,8 +6,10 @@
     <div class="tab">run <input type="number" v-model="exper"> experiment(s)</div>
     <div class="tab"> have a <input type="number" v-model="probability"> probability of success (heads)</div>
     <div class="tab">hide coin visualization <input type="checkbox" v-model="hidden"></div>
-    <button type="button" @click="run">Run Experiment</button>
-    <!-- Give people a reason to use your form -->
+    <Button class="run" color-button="#00838f" color-text="white" @click="run">
+      <div class="runicon"><fa icon="play"/></div>
+      <div class="runtext">Run Experiment</div>
+    </Button>
   </div>
   <div class="short-graph">
     <trendline size-point="2.5" label-x="Experiment" label-y="Probability" :data-x="xdata" :data-y="ydata"/>
@@ -27,11 +29,13 @@
 <script>
 import Histogram from "@/core/plots/Histogram.vue";
 import Trendline from "@/core/plots/Trendline.vue";
+import Button from "@/core/components/Button.vue";
 
 export default {
   components: {
     Histogram,
-    Trendline
+    Trendline,
+    Button
   },
   data() {
     return {
@@ -47,7 +51,7 @@ export default {
       probability: 0.5,
       hidden: true,
       xDataShort: [],
-      accuracy: 1000 //decimal accuracy s.t. we weight the random probability
+      accuracy: 1000 //decimal accuracy for the random probability
     };
   },
   methods: {
@@ -109,10 +113,10 @@ export default {
 
 <style scoped>
 .gridcontainer {
-  padding: 1.5em;
   min-height: 100%;
 
   display: grid;
+
   grid-template:
     "input" auto
     "short-graph" minmax(200px, 400px)
@@ -151,5 +155,16 @@ export default {
 }
 .tab {
   margin-left: 15px;
+}
+.run {
+  margin: 1em 0em;
+  display: grid;
+  grid-template: "runicon runtext";
+}
+.runicon {
+  margin: 0.25em;
+}
+.runtext {
+  margin: 0.25em 0.25em 0.25em 0.75em;
 }
 </style>
