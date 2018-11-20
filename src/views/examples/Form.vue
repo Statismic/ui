@@ -3,7 +3,7 @@
   <label>Years</label>
   <input type="number" placeholder="Age">
   <label>Input with icon</label>
-  <br><fa icon="search"/>
+  <br><fa icon="search"></fa>
   <input type="text" placeholder="Search.." style="background-image: url(searchicon.png);">
 </form>
 </template>
