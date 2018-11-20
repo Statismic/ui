@@ -1,6 +1,10 @@
 <template>
 <div style="margin: 30px;">
-  <Button color-button="red" color-text="white" @click="greet">
+  <Button color-button="#005662" color-text="white" @click="greet">
+    Execute
+  </Button>
+  <br>
+    <Button color-button="#00838f" color-text="white" @click="greet">
     Execute
   </Button>
 </div>
