@@ -5,12 +5,13 @@ import App from "./App.vue";
 import router from "./router";
 import store from "./store";
 import { library } from "@fortawesome/fontawesome-svg-core";
-import { faSearch } from "@fortawesome/free-solid-svg-icons";
+import { faSearch, faPlay } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 import "@statismic/plots";
 import "./registerServiceWorker";
 
 library.add(faSearch);
+library.add(faPlay);
 
 Vue.component("fa", FontAwesomeIcon);
 Vue.use(VueParticles);
