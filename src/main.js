@@ -7,7 +7,7 @@ import store from "./store";
 import { library } from "@fortawesome/fontawesome-svg-core";
 import { faSearch, faPlay } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
-import "@statismic/plots";
+import StatismicPlots from "@statismic/plots";
 import StatismicComponents from "@statismic/components";
 import "./registerServiceWorker";
 
@@ -17,6 +17,7 @@ Vue.component("fa", FontAwesomeIcon);
 
 Vue.use(VueParticles);
 Vue.use(plugins);
+Vue.use(StatismicPlots);
 Vue.use(StatismicComponents);
 Vue.config.productionTip = false;
 
