@@ -12,14 +12,14 @@
     </Button>
   </div>
   <div class="short-graph">
-    <trendline size-point="2.5" label-x="Experiment" label-y="Probability" :data-x="xdata" :data-y="ydata"/>
+    <statismic-trendline size-point="2.5" label-x="Experiment" label-y="Probability" :data-x="xdata" :data-y="ydata"/>
   </div>
   <div class="output">
     <div v-html="timerString"></div>
     <div v-show="!hidden">{{coinString}}</div>
   </div>
   <div class="long-graph">
-    <histogram label-x="Ratio" label-y="Experiment(s)" color-bar="#A9E3F5" :data-x="xDataShort" :interval="0.1"/>
+    <statismic-histogram label-x="Ratio" label-y="Experiment(s)" color-bar="#A9E3F5" :data-x="xDataShort" :interval="0.1"/>
   </div>
 
 </div>
@@ -27,14 +27,10 @@
 
 
 <script>
-import Histogram from "@/core/plots/Histogram.vue";
-import Trendline from "@/core/plots/Trendline.vue";
 import Button from "@/core/components/Button.vue";
 
 export default {
   components: {
-    Histogram,
-    Trendline,
     Button
   },
   data() {
