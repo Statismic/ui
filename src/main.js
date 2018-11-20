@@ -8,14 +8,16 @@ import { library } from "@fortawesome/fontawesome-svg-core";
 import { faSearch, faPlay } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 import "@statismic/plots";
+import StatismicComponents from "@statismic/components";
 import "./registerServiceWorker";
 
 library.add(faSearch);
 library.add(faPlay);
-
 Vue.component("fa", FontAwesomeIcon);
+
 Vue.use(VueParticles);
 Vue.use(plugins);
+Vue.use(StatismicComponents);
 Vue.config.productionTip = false;
 
 new Vue({

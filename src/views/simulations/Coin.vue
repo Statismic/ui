@@ -6,10 +6,10 @@
     <div class="tab">run <input type="number" v-model="exper"> experiment(s)</div>
     <div class="tab"> have a <input type="number" v-model="probability"> probability of success (heads)</div>
     <div class="tab">hide coin visualization <input type="checkbox" v-model="hidden"></div>
-    <Button class="run" color-button="#00838f" color-text="white" @click="run">
+    <statismic-button class="run" color-button="#00838f" color-text="white" @click="run">
       <div class="runicon"><fa icon="play"/></div>
       <div class="runtext">Run Experiment</div>
-    </Button>
+    </statismic-button>
   </div>
   <div class="short-graph">
     <statismic-trendline size-point="2.5" label-x="Experiment" label-y="Probability" :data-x="xdata" :data-y="ydata"/>
@@ -27,12 +27,7 @@
 
 
 <script>
-import Button from "@/core/components/Button.vue";
-
 export default {
-  components: {
-    Button
-  },
   data() {
     return {
       xdata: [],
