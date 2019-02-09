@@ -1,5 +1,5 @@
 import Vue from "vue";
-import VueParticles from "vue-particles";
+import "./plugins/vuetify";
 import plugins from "./core/plugins";
 import App from "./App.vue";
 import router from "./router";
@@ -15,7 +15,6 @@ library.add(faSearch);
 library.add(faPlay);
 Vue.component("fa", FontAwesomeIcon);
 
-Vue.use(VueParticles);
 Vue.use(plugins);
 Vue.use(StatismicPlots);
 Vue.use(StatismicComponents);

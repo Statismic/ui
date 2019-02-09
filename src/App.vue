@@ -1,8 +1,22 @@
 <template>
-<div class="container">
-  <Notification/>
-  <router-view/>
-</div>
+  <v-app dark>
+    <Notification/>
+    <v-toolbar color="secondary" v-if="this.$route.path !== '/'">
+      <v-toolbar-items>
+        <router-link tag="div" to="/">
+          <v-layout align-center justify-center row fill-height style="cursor: pointer">
+            <v-avatar tile>
+              <img src="@/assets/logo/logo_basic.png" id="logo">
+            </v-avatar>
+            <h3 style="text-decoration: none">Statismic</h3>
+          </v-layout>
+        </router-link>
+      </v-toolbar-items>
+    </v-toolbar>
+    <v-content>
+      <router-view/>
+    </v-content>
+  </v-app>
 </template>
 
 <script>
@@ -17,29 +31,9 @@ export default {
 </script>
 
 <style>
-* {
-  font-family: "Avenir", Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
-
-body {
-  background-color: #005662;
-  margin: 0px;
-}
-
-html,
-body,
-.container {
-  height: 100%;
-}
-
-/* apply a natural box layout model to all elements */
-*,
-*:before,
-*:after {
-  -moz-box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  box-sizing: border-box;
+#logo {
+  max-height: 60%;
+  width: auto;
+  height: auto;
 }
 </style>

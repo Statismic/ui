@@ -1,48 +1,34 @@
 <template>
-<div>
-  <transition name="show">
-    <img id="logo" src="@/assets/logo/logo_transparent.png" height="350px" v-show="!searchMode" />
-  </transition>
-  <input id="search" type="text" placeholder="Search" v-model="searchTerm">
-  <SearchResult id="search-result" v-show="searchMode" :results="searchResults" />
+  <v-container fluid>
+    <transition :css="false" @enter="onLeaveSearchMode" @leave="onEnterSearchMode">
+      <img id="logo" src="@/assets/logo/logo_transparent.png" v-show="!searchMode">
+    </transition>
 
-  <div class="grid-container" v-show="!searchMode">
-    <CategoryModal v-show="showModal" @close="showModal = false" :name="modal.name" :apps="modal.apps" />
-    <Category v-for="(category, index) in categories" :key="index" :name="category.name" @click.native="onShowModal(category)"/>
-  </div>
+    <input id="search" type="text" placeholder="Search" v-model="searchTerm">
+    <SearchResult
+      ref="searchResult"
+      key="result"
+      id="search-result"
+      v-show="searchMode"
+      :results="searchResults"
+    />
 
-  <vue-particles
-    color="#dedede"
-    :particleOpacity="0.7"
-    :particlesNumber="80"
-    shapeType="circle"
-    :particleSize="4"
-    linesColor="#dedede"
-    :linesWidth="1"
-    :lineLinked="true"
-    :lineOpacity="0.4"
-    :linesDistance="150"
-    :moveSpeed="3"
-    :hoverEffect="true"
-    hoverMode="grab"
-    :clickEffect="true"
-    clickMode="push"
-  >
-  </vue-particles>
-</div>
+    <div class="grid-container" v-show="!searchMode">
+      <Category v-for="(category, index) in categories" :key="index" :category="category"/>
+    </div>
+  </v-container>
 </template>
 
 <script>
 import categories from "@/assets/data/categories.json";
 import Category from "@/core/partials/Category.vue";
-import CategoryModal from "@/core/partials/CategoryModal.vue";
 import SearchResult from "@/core/partials/SearchResult.vue";
+import { TweenLite } from "gsap";
 
 export default {
   name: "home",
   components: {
     Category,
-    CategoryModal,
     SearchResult
   },
   data() {
@@ -50,19 +36,16 @@ export default {
       searchTerm: "",
       searchMode: false,
       searchResults: [],
-      showModal: false,
-      categories: categories,
-      modal: {
-        name: "",
-        apps: []
-      }
+      dialog: false,
+      categories: categories
     };
   },
   methods: {
-    onShowModal(category) {
-      this.showModal = true;
-      this.modal.name = category.name;
-      this.modal.apps = category.apps;
+    onEnterSearchMode(el, done) {
+      TweenLite.to(el, 1, { maxHeight: "0px", onComplete: done });
+    },
+    onLeaveSearchMode(el, done) {
+      TweenLite.to(el, 1, { maxHeight: "350px", onComplete: done });
     }
   },
   watch: {
@@ -83,25 +66,7 @@ export default {
 #logo {
   display: block;
   margin: 0 auto;
-}
-
-.show-enter,
-.show-leave-to {
-  max-height: 0px;
-}
-
-.show-enter-to,
-.show-leave {
-  max-height: 350px;
-}
-
-.show-enter-active,
-.show-leave-active {
-  -webkit-transition: max-height 1s ease 0s;
-  -moz-transition: max-height 1s ease 0s;
-  -o-transition: max-height 1s ease 0s;
-  transition: max-height 1s ease 0s;
-  will-change: max-height;
+  max-height: 400px;
 }
 
 input#search {
@@ -127,16 +92,5 @@ input#search {
   display: grid;
   grid-gap: 20px;
   grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-}
-
-#particles-js {
-  position: absolute;
-  background-size: cover;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  overflow-y: hidden;
-  z-index: -1;
 }
 </style>

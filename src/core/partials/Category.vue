@@ -1,36 +1,52 @@
 <template>
-<div class="card">
-  <h3 class="title">{{ name }}</h3>
-</div>
+  <v-dialog v-model="dialog" max-width="400">
+    <v-card id="container" slot="activator" color="rgba(0, 0, 0, 0.5)" elevation="4" ripple>
+      <v-card-title>
+        <h3 id="title">{{ category.name }}</h3>
+      </v-card-title>
+    </v-card>
+
+    <v-card light>
+      <v-card-title primary-title>
+        <h2>{{ category.name }}</h2>
+      </v-card-title>
+      <v-divider></v-divider>
+
+      <v-list>
+        <v-list-tile v-for="(app, index) in category.apps" :key="index">
+          <v-list-tile-content>
+            <v-list-tile-title>
+              <router-link :to="app.path">{{ app.name }}</router-link>
+            </v-list-tile-title>
+          </v-list-tile-content>
+        </v-list-tile>
+      </v-list>
+    </v-card>
+  </v-dialog>
 </template>
 
 <script>
 export default {
+  data() {
+    return {
+      dialog: false
+    };
+  },
   props: {
-    name: String
+    category: Object
   }
 };
 </script>
 
 <style scoped>
-.card {
-  background-color: rgba(0, 0, 0, 0.5);
+#container {
   cursor: pointer;
-  padding: 5px;
   border-radius: 5px;
-  z-index: 10;
-
-  /* Add shadows to create the "card" effect */
-  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2);
-  transition: 0.3s;
 }
 
-.card:hover {
-  box-shadow: 0 2px 4px 2px rgba(0, 0, 0, 0.2);
-}
-
-.title {
+#title {
   color: white;
   text-align: center;
+  width: 100%;
 }
 </style>
