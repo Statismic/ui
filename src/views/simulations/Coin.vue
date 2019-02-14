@@ -9,12 +9,10 @@
     </form>
 
     <div class="short-graph">
-      <statismic-trendline
-        size-point="2.5"
-        label-x="Experiment"
-        label-y="Probability"
-        :data-x="xdata"
-        :data-y="ydata"
+      <plot
+        type="trendline"
+        :options="{labelX: 'Experiment', labelY: 'Probability', sizePoint: 2.5}"
+        :data="trendlineData"
       />
     </div>
     <div class="output">
@@ -22,12 +20,10 @@
       <div v-show="!hidden">{{coinString}}</div>
     </div>
     <div class="long-graph">
-      <statismic-histogram
-        label-x="Ratio"
-        label-y="Experiment(s)"
-        color-bar="#A9E3F5"
-        :data-x="xDataShort"
-        :interval="0.1"
+      <plot
+        type="histogram"
+        :options="{labelX: 'Ratio', labelY: 'Experiment(s)', barColor: '#A9E3F5'}"
+        :data="xDataShort"
       />
     </div>
   </div>
@@ -38,8 +34,7 @@
 export default {
   data() {
     return {
-      xdata: [],
-      ydata: [],
+      trendlineData: [],
       coins: 1,
       coinString: "",
       timerString: "",
@@ -49,11 +44,22 @@ export default {
       experCounter: 0,
       probability: 0.5,
       hidden: true,
-      xDataShort: [],
+      xDataShort: Array(10)
+        .fill()
+        .map((_, i) => ({
+          x: (0.1 * i).toFixed(1),
+          y: 0
+        })),
       accuracy: 1000 //decimal accuracy for the random probability
     };
   },
   methods: {
+    /**
+     * @param prob is [0.0, 1.0]
+     */
+    cntrHash(prob) {
+      return Math.floor(prob * this.xDataShort.length);
+    },
     doExper() {
       this.coinString = "";
       let experiementHead = 0;
@@ -73,16 +79,17 @@ export default {
             experiementHead++;
           }
         }
-        this.xDataShort.push(experiementHead / this.coins);
-        this.xdata.push(this.experCounter);
+        this.xDataShort[this.cntrHash(experiementHead / this.coins)].y++;
+        this.trendlineData.push({
+          x: this.experCounter,
+          y: experiementHead / this.coins
+        });
         this.experCounter++;
-        this.ydata.push(experiementHead / this.coins);
         experiementHead = 0;
       }
-      if (this.xdata.length > 50) {
-        const start = this.xdata.length - 50;
-        this.xdata = this.xdata.slice(start);
-        this.ydata = this.ydata.slice(start);
+      if (this.trendlineData.length > 50) {
+        const start = this.trendlineData.length - 50;
+        this.trendlineData = this.trendlineData.slice(start);
       }
     },
     run() {
