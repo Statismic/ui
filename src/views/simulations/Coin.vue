@@ -1,28 +1,36 @@
 <template>
-<div class="gridcontainer">
+  <div class="gridcontainer">
+    <form class="input">
+      <v-text-field v-model="coins" label="coins" type="number" required/>
+      <v-text-field v-model="exper" label="experiments" type="number" required/>
+      <v-text-field v-model="probability" label="success probability" type="number" required/>
 
-  <div class="input">
-    <div class="tab">flip <input type="number" v-model="coins"> coin(s)</div>
-    <div class="tab">run <input type="number" v-model="exper"> experiment(s)</div>
-    <div class="tab"> have a <input type="number" v-model="probability"> probability of success (heads)</div>
-    <div class="tab">hide coin visualization <input type="checkbox" v-model="hidden"></div>
-    <statismic-button class="run" color-button="#00838f" color-text="white" @click="run">
-      <div class="runicon"><fa icon="play"/></div>
-      <div class="runtext">Run Experiment</div>
-    </statismic-button>
-  </div>
-  <div class="short-graph">
-    <statismic-trendline size-point="2.5" label-x="Experiment" label-y="Probability" :data-x="xdata" :data-y="ydata"/>
-  </div>
-  <div class="output">
-    <div v-html="timerString"></div>
-    <div v-show="!hidden">{{coinString}}</div>
-  </div>
-  <div class="long-graph">
-    <statismic-histogram label-x="Ratio" label-y="Experiment(s)" color-bar="#A9E3F5" :data-x="xDataShort" :interval="0.1"/>
-  </div>
+      <v-btn class="run" color="#00838f" @click="run" style="color: white;">Run Experiment</v-btn>
+    </form>
 
-</div>
+    <div class="short-graph">
+      <statismic-trendline
+        size-point="2.5"
+        label-x="Experiment"
+        label-y="Probability"
+        :data-x="xdata"
+        :data-y="ydata"
+      />
+    </div>
+    <div class="output">
+      <div v-html="timerString"></div>
+      <div v-show="!hidden">{{coinString}}</div>
+    </div>
+    <div class="long-graph">
+      <statismic-histogram
+        label-x="Ratio"
+        label-y="Experiment(s)"
+        color-bar="#A9E3F5"
+        :data-x="xDataShort"
+        :interval="0.1"
+      />
+    </div>
+  </div>
 </template>
 
 
