@@ -1,5 +1,7 @@
 # ui
 
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/295732fad85b4db3b06cd1574fca4ae2)](https://app.codacy.com/app/lherman-cs/ui?utm_source=github.com&utm_medium=referral&utm_content=Statismic/ui&utm_campaign=Badge_Grade_Settings)
+
 > Statismic UI
 
 ## Build Setup
