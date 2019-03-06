@@ -4,7 +4,7 @@ node_js:
 install:
   - npm install
 script:
-  - npm run build --modern
+  - npm run generate
 cache:
   directories:
     - "node_modules"
