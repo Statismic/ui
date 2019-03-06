@@ -4,29 +4,33 @@ const VuetifyLoaderPlugin = require('vuetify-loader/lib/plugin')
 const pkg = require('./package')
 
 // Generate categories
+const generateCategories = () => {
+  const appDir = path.join('pages', 'app')
+  const categories = fs
+    .readdirSync(appDir, { withFileTypes: true })
+    .filter(item => item.isDirectory())
+    .map(item => {
+      const category = item.name
+      const apps = fs.readdirSync(path.join(appDir, category))
 
-const appDir = path.join('pages', 'app')
-const categories = fs
-  .readdirSync(appDir, { withFileTypes: true })
-  .filter(item => item.isDirectory())
-  .map(item => {
-    const category = item.name
-    const apps = fs.readdirSync(path.join(appDir, category))
-
-    return {
-      name: category,
-      apps: apps.map(app => {
-        const name = app.substr(0, app.lastIndexOf('.vue'))
-        const url = `app/${category}/${name}`
-        return {
-          name: name.replace('-', ' '),
-          path: url
-        }
-      })
-    }
-  })
-const categoriesJSON = JSON.stringify(categories)
-fs.writeFileSync(path.join('assets', 'data', 'categories.json'), categoriesJSON)
+      return {
+        name: category,
+        apps: apps.map(app => {
+          const name = app.substr(0, app.lastIndexOf('.vue'))
+          const url = `app/${category}/${name}`
+          return {
+            name: name.replace('-', ' '),
+            path: url
+          }
+        })
+      }
+    })
+  const categoriesJSON = JSON.stringify(categories)
+  fs.writeFileSync(
+    path.join('assets', 'data', 'categories.json'),
+    categoriesJSON
+  )
+}
 
 module.exports = {
   mode: 'universal',
@@ -91,6 +95,8 @@ module.exports = {
     ** You can extend webpack config here
     */
     extend(config, ctx) {
+      generateCategories()
+
       // Run ESLint on save
       if (ctx.isDev && ctx.isClient) {
         config.module.rules.push({
