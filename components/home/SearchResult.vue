@@ -1,5 +1,5 @@
 <template>
-  <v-card style="width: fit-content;" class="pa-2">
+  <v-card class="pa-2" style="width: max-content;">
     <v-card-title primary-title>
       <h1>Search Results</h1>
     </v-card-title>
