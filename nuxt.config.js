@@ -11,12 +11,15 @@ const generateCategories = () => {
     .filter(item => item.isDirectory())
     .map(item => {
       const category = item.name
-      const apps = fs.readdirSync(path.join(appDir, category))
+      const baseDir = path.join(appDir, category)
+      const apps = fs.readdirSync(baseDir)
 
       return {
         name: category,
-        apps: apps.map(app => {
-          const name = app.substr(0, app.lastIndexOf('.vue'))
+        apps: apps.map(name => {
+          if (!fs.lstatSync(path.join(baseDir, name)).isDirectory()) {
+            name = name.substr(0, name.lastIndexOf('.vue'))
+          }
           const url = `app/${category}/${name}`
           return {
             name: name.replace('-', ' '),
@@ -68,11 +71,7 @@ module.exports = {
   /*
   ** Plugins to load before mounting the App
   */
-  plugins: [
-    '@/plugins/vuetify',
-    '@/plugins/search',
-    { src: '@/plugins/plots', ssr: false }
-  ],
+  plugins: ['@/plugins/vuetify', '@/plugins/search'],
 
   /*
   ** Nuxt.js modules

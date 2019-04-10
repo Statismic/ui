@@ -11,11 +11,8 @@
     </form>
 
     <div class="short-graph">
-      <plot
-        type="trendline"
-        :options="{labelX: 'Experiment', labelY: 'Probability', sizePoint: 2.5}"
-        :data="trendlineData"
-      />
+      <trendline :data="trendlineData" />
+      <!--           :options="{labelX: 'Experiment', labelY: 'Probability', sizePoint: 2.5}" -->
     </div>
     <div class="output">
       <div v-html="timerString" />
@@ -24,18 +21,23 @@
       </div>
     </div>
     <div class="long-graph">
-      <plot
-        type="histogram"
-        :options="{labelX: 'Ratio', labelY: 'Experiment(s)', barColor: '#A9E3F5'}"
-        :data="xDataShort"
-      />
+      <!-- <plot
+          type="histogram"
+          :options="{labelX: 'Ratio', labelY: 'Experiment(s)', barColor: '#A9E3F5'}"
+          :data="xDataShort"
+        /> -->
     </div>
   </div>
 </template>
 
 
 <script>
+import Trendline from './trendline'
+
 export default {
+  components: {
+    Trendline
+  },
   data() {
     return {
       trendlineData: [],
