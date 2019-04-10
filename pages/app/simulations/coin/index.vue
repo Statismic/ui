@@ -12,7 +12,6 @@
 
     <div class="short-graph">
       <trendline :data="trendlineData" />
-      <!--           :options="{labelX: 'Experiment', labelY: 'Probability', sizePoint: 2.5}" -->
     </div>
     <div class="output">
       <div v-html="timerString" />
@@ -21,11 +20,7 @@
       </div>
     </div>
     <div class="long-graph">
-      <!-- <plot
-          type="histogram"
-          :options="{labelX: 'Ratio', labelY: 'Experiment(s)', barColor: '#A9E3F5'}"
-          :data="xDataShort"
-        /> -->
+      <bar :data="xDataShort" />
     </div>
   </div>
 </template>
@@ -33,10 +28,12 @@
 
 <script>
 import Trendline from './trendline'
+import Bar from './bar'
 
 export default {
   components: {
-    Trendline
+    Trendline,
+    Bar
   },
   data() {
     return {
